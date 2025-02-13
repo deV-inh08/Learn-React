@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+html {
+  height: 100%;
+  line-height: 1.2;
+}
+
+body {
+  font-family: 'Helvetica', Helvetica, Arial, sans-serif;
+  font-weight: 400;
+}
+
+@theme {
+  --fill-bg-logo: #ee4d2d
+}
