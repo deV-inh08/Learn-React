@@ -6,7 +6,7 @@ import { FormData } from '../pages/Register/Register'
 // + Meansure <T> has key onlyone type 'string'
 // + Path<T>: Only get key string
 
-type Rules<T extends FieldValues> = { [K in Path<T>]: RegisterOptions<T, K> }
+export type Rules<T extends FieldValues> = { [K in Path<T>]: RegisterOptions<T, K> }
 
 export const getRules = (getValues?: UseFormGetValues<FormData>): Rules<FormData> => ({
   email: {
