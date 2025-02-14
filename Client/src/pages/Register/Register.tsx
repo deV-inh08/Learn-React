@@ -1,13 +1,11 @@
 import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Link } from 'react-router-dom'
+import { schema, Schema as SchemaType } from '../../utils/rules'
 import { getRules } from '../../utils/rules'
 import Input from '../../components/Input'
 
-export interface FormData {
-  email: string
-  password: string
-  confirm_password: string
-}
+export type FormData = SchemaType
 
 const Register = () => {
   const {
@@ -16,7 +14,9 @@ const Register = () => {
     getValues,
     handleSubmit,
     formState: { errors }
-  } = useForm<FormData>()
+  } = useForm<FormData>({
+    resolver: yupResolver(schema)
+  })
 
   const rules = getRules(getValues)
 
@@ -34,6 +34,7 @@ const Register = () => {
           <div className='lg:col-span-2 lg:col-start-4'>
             <form action='' className='p-10 rounded bg-white shadow-sm my-10' onSubmit={onSubmit} noValidate>
               <p className='text-2xl'>Đăng kí</p>
+
               {/* <div className='my-3 h-[4rem]'>
                 <input
                   type='email'
@@ -44,6 +45,7 @@ const Register = () => {
                 />
                 <p className='mt-1 text-red-600 max-h-[15px] text-sm'>{errors.email?.message}</p>
               </div> */}
+              
               <Input
                 name='email'
                 type='email'
@@ -52,7 +54,7 @@ const Register = () => {
                 rules={rules.email}
                 register={register}
               ></Input>
-             <Input
+              <Input
                 name='password'
                 type='password'
                 errorMessage={errors.password?.message}
@@ -60,6 +62,8 @@ const Register = () => {
                 rules={rules.password}
                 register={register}
               ></Input>
+
+
               {/* <div className='my-3 h-[4rem]'>
                 <input
                   type='password'
@@ -80,7 +84,7 @@ const Register = () => {
                 type='password'
                 errorMessage={errors.confirm_password?.message}
                 placeholder='Enter your confirm passsword'
-                rules={rules.confirm_password}
+                rules={rules.confirm_password} // If have Schema => Don't need rules
                 register={register}
               ></Input>
 
