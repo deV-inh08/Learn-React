@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { rules } from '../../utils/rules'
+import { getRules } from '../../utils/rules'
 
 export interface FormData {
   email: string
@@ -11,13 +11,20 @@ export interface FormData {
 const Register = () => {
   const {
     register,
+    watch,
+    getValues,
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>()
 
+  const rules = getRules(getValues)
+
   const onSubmit = handleSubmit((data) => {
     console.log(data)
   })
+
+  const formValues = watch()
+  console.log(formValues)
 
   return (
     <div className='bg-orange-600'>
@@ -39,6 +46,7 @@ const Register = () => {
               <div className='my-3 h-[4rem]'>
                 <input
                   type='password'
+                  autoComplete='on'
                   // name='password' => overwrite with react-hook-form when 'register' return
                   placeholder='Enter your password'
                   className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
@@ -52,7 +60,11 @@ const Register = () => {
                   // name='password' => overwrite with react-hook-form when 'register' return
                   placeholder='Confirm your password'
                   className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                  {...register('confirm_password')}
+                  {...register('confirm_password', {
+                    ...rules.confirm_password
+                    // validate confirm password
+                    // validate: (value) => value === getValues('password') || 'Confirm password không khớp'
+                  })}
                 />
                 <p className='mt-1 text-red-600 max-h-[15px] text-sm'>{errors.confirm_password?.message}</p>
               </div>
@@ -65,7 +77,9 @@ const Register = () => {
               <div className='mt-8 text-center'>
                 <div className='flex items-center justify-center gap-3'>
                   <span className='text-gray-400'>Bạn đã có tài khoản?</span>
-                  <Link to='/login' className='text-orange-600'>Đăng nhập</Link>
+                  <Link to='/login' className='text-orange-600'>
+                    Đăng nhập
+                  </Link>
                 </div>
               </div>
             </form>

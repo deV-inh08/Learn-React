@@ -8,10 +8,10 @@ const Footer = () => {
           <p>© 2025 Shopee. Tất cả các quyền được bảo lưu.</p>
         </div>
         <div className='lg:col-span-2'>
-            <div>
-              Quốc gia & Khu vực: Singapore Indonesia Đài Loan Thái Lan Malaysia Việt Nam Philippines Brazil México
-              Colombia Chile Poland
-            </div>
+          <div>
+            Quốc gia & Khu vực: Singapore Indonesia Đài Loan Thái Lan Malaysia Việt Nam Philippines Brazil México
+            Colombia Chile Poland
+          </div>
         </div>
         <div className='mt-10 text-center text-sm'>
           <div>Công ty TNHH Shopee</div>

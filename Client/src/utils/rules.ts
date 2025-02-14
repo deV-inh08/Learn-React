@@ -1,15 +1,14 @@
-import { FieldValues, type RegisterOptions, Path } from 'react-hook-form'
+import { FieldValues, type RegisterOptions, Path, type UseFormGetValues } from 'react-hook-form'
 import { FormData } from '../pages/Register/Register'
 
-// extend FieldValues: 
+// extend FieldValues:
 // + An object contains field valid of form ('FormData')
 // + Meansure <T> has key onlyone type 'string'
 // + Path<T>: Only get key string
 
-type Rules<T extends FieldValues> = { [K in Path<T>]: RegisterOptions<T, K>}
+type Rules<T extends FieldValues> = { [K in Path<T>]: RegisterOptions<T, K> }
 
-
-export const rules: Rules<FormData> = {
+export const getRules = (getValues?: UseFormGetValues<FormData>): Rules<FormData> => ({
   email: {
     required: {
       value: true,
@@ -54,6 +53,10 @@ export const rules: Rules<FormData> = {
     minLength: {
       value: 5,
       message: 'Độ dài từ 5 - 160 ký tự'
-    }
+    },
+    validate:
+      typeof getValues === 'function'
+        ? (value) => value === getValues('password') || 'Confirm password không khớp'
+        : undefined
   }
-}
+})
