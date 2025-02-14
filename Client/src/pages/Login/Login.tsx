@@ -1,7 +1,7 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 
 const Login = () => {
+  
   return (
     <div className='bg-orange-600'>
       <div className='max-w-7xl mx-auto px-4'>
@@ -28,7 +28,7 @@ const Login = () => {
                 <p className='mt-1 text-red-600 min-h-[1rem] text-sm'>Emal not valid</p>
               </div>
               <div className='mt-5'>
-                <button className='w-full bg-orange-600 text-white text-center py-4'>Đăng nhập</button>
+                <button type='submit' className='w-full bg-orange-600 text-white text-center py-4'>Đăng nhập</button>
               </div>
               <div className='mt-8 text-center'>
                 <div className='flex items-center justify-center gap-3'>
