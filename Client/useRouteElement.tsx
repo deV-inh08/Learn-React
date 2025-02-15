@@ -1,4 +1,3 @@
-import React from 'react'
 import { useRoutes } from 'react-router-dom'
 import ProductList from './src/pages/ProductList'
 import Login from './src/pages/Login'

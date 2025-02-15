@@ -62,7 +62,6 @@ export const getRules = (getValues?: UseFormGetValues<FormData>): Rules<FormData
   }
 })
 
-
 export const schema = yup.object({
   email: yup
     .string()
@@ -81,6 +80,5 @@ export const schema = yup.object({
     .min(6, 'Độ dài từ 6 - 160 ký tự')
     .max(160, 'Độ dài từ 6 - 160 ký tự')
 })
-
 
 export type Schema = yup.InferType<typeof schema>

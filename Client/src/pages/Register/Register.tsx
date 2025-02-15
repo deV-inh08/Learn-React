@@ -1,9 +1,12 @@
+import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link } from 'react-router-dom'
+import { omit } from 'lodash'
 import { schema, Schema as SchemaType } from '../../utils/rules'
 import { getRules } from '../../utils/rules'
 import Input from '../../components/Input'
+import { registerAccount } from '../../apis/auth.apis.ts'
 
 export type FormData = SchemaType
 
@@ -20,12 +23,22 @@ const Register = () => {
 
   const rules = getRules(getValues)
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data)
+  const registerMutation = useMutation({
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
   })
 
+  const onSubmit = handleSubmit((data) => {
+    const body = { ...omit(data, ['confirm_password']) }
+    registerMutation.mutate(body, {
+      onSuccess: (data) => {
+        console.log(data)
+      }
+    })
+  })
+
+
+
   const formValues = watch()
-  console.log(formValues)
 
   return (
     <div className='bg-orange-600'>
@@ -45,7 +58,7 @@ const Register = () => {
                 />
                 <p className='mt-1 text-red-600 max-h-[15px] text-sm'>{errors.email?.message}</p>
               </div> */}
-              
+
               <Input
                 name='email'
                 type='email'
@@ -62,7 +75,6 @@ const Register = () => {
                 rules={rules.password}
                 register={register}
               ></Input>
-
 
               {/* <div className='my-3 h-[4rem]'>
                 <input
