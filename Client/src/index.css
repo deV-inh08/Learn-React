@@ -12,6 +12,8 @@ body {
 
 @theme {
   --fill-bg-logo: #ee4d2d;
+  --fill-logo-white: #ffffff;
+  --color-primary-orange: -180deg, #ee4d2d, #ff7337
 }
 
 @layer components {
