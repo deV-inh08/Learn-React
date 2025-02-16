@@ -1,8 +1,13 @@
 import http from '../utils/http'
 import { AuthReponse } from '../types/auth.type'
 
-// Recive 'body' includes email: string && password: string
-export const registerAccount = (body: { email: string; password: string }) => http.post<AuthReponse>('/registerr', body)
+interface Body {
+  email: string
+  password: string
+}
 
-// tranvinh16t@gmail.com
-// 301108
+// Call API '/register' Recive 'body' includes email: string && password: string
+export const registerAccount = (body: Body) => http.post<AuthReponse>('/register', body)
+
+// Call API '/login', Recive 'body' includes email: string && password: string
+export const loginAccount = (body: Body) => http.post('/login', body)

@@ -3,8 +3,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link } from 'react-router-dom'
 import { omit } from 'lodash'
-import { schema, Schema as SchemaType } from '../../utils/rules'
-import { getRules } from '../../utils/rules'
+import { getRules, schema, Schema as SchemaType } from '../../utils/rules'
 import Input from '../../components/Input'
 import { registerAccount } from '../../apis/auth.apis.ts'
 import { isAxiosUnprocessableEntityError } from '../../utils/uitls.ts'
@@ -27,50 +26,62 @@ const Register = () => {
 
   const registerMutation = useMutation({
     // mutaion: Handle Call API
-    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body),
-    // When Success
-    onSuccess: (data) => {
-      console.log(data)
-    },
-    // When Error
-    onError: (error) => {
-      // Form Error is { message: string, Data: { email: string; password: string } }
-      if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
-        const formError = error.response?.data.data
-        // if (formError?.email) {
-        //   setError('email', {
-        //     message: formError.email,
-        //     type: 'Server'
-        //   })
-        // }
-        // if (formError?.password) {
-        //   setError('password', {
-        //     message: formError.password,
-        //     type: 'Server'
-        //   })
-        // }
-
-        if (formError) {
-          Object.keys(formError).forEach((key) => {
-            setError(key as keyof Omit<FormData, 'confirm_password'>, {
-              message: formError[key as keyof Omit<FormData, 'confirm_password'>],
-              type: 'Server'
-            })
-          })
-        }
-      }
-    }
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
   })
 
   const onSubmit = handleSubmit((data) => {
     const body = { ...omit(data, ['confirm_password']) }
     registerMutation.mutate(body, {
+      // When Success and Error
       onSuccess: (data) => {
-        console.log(data)
+        if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(data)) {
+          const formError = data.response?.data.data
+          if (formError?.email) {
+            setError('email', {
+              message: formError.email,
+              type: 'Server'
+            })
+          }
+          if (formError?.password) {
+            setError('password', {
+              message: formError.password,
+              type: 'Server'
+            })
+          }
+        } else {
+          console.log(data)
+        }
       }
+      // When Error
+      // onError: (error) => {
+      //   // Form Error is { message: string, Data: { email: string; password: string } }
+      //   if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
+      //     const formError = error.response?.data.data
+      //     if (formError?.email) {
+      //       setError('email', {
+      //         message: formError.email,
+      //         type: 'Server'
+      //       })
+      //     }
+      //     if (formError?.password) {
+      //       setError('password', {
+      //         message: formError.password,
+      //         type: 'Server'
+      //       })
+      //     }
+      //     // Method 2
+      //     // if (formError) {
+      //     //   Object.keys(formError).forEach((key) => {
+      //     //     setError(key as keyof Omit<FormData, 'confirm_password'>, {
+      //     //       message: formError[key as keyof Omit<FormData, 'confirm_password'>],
+      //     //       type: 'Server'
+      //     //     })
+      //     //   })
+      //     // }
+      //   }
+      // }
     })
   })
-  
   return (
     <div className='bg-orange-600'>
       <div className='container-custom'>
