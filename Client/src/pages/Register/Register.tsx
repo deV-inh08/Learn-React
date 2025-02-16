@@ -7,14 +7,16 @@ import { schema, Schema as SchemaType } from '../../utils/rules'
 import { getRules } from '../../utils/rules'
 import Input from '../../components/Input'
 import { registerAccount } from '../../apis/auth.apis.ts'
+import { isAxiosUnprocessableEntityError } from '../../utils/uitls.ts'
+import { ResponseApi } from '../../types/util.type.ts'
 
 export type FormData = SchemaType
 
 const Register = () => {
   const {
     register,
-    watch,
     getValues,
+    setError,
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>({
@@ -24,7 +26,40 @@ const Register = () => {
   const rules = getRules(getValues)
 
   const registerMutation = useMutation({
-    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
+    // mutaion: Handle Call API
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body),
+    // When Success
+    onSuccess: (data) => {
+      console.log(data)
+    },
+    // When Error
+    onError: (error) => {
+      // Form Error is { message: string, Data: { email: string; password: string } }
+      if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
+        const formError = error.response?.data.data
+        // if (formError?.email) {
+        //   setError('email', {
+        //     message: formError.email,
+        //     type: 'Server'
+        //   })
+        // }
+        // if (formError?.password) {
+        //   setError('password', {
+        //     message: formError.password,
+        //     type: 'Server'
+        //   })
+        // }
+
+        if (formError) {
+          Object.keys(formError).forEach((key) => {
+            setError(key as keyof Omit<FormData, 'confirm_password'>, {
+              message: formError[key as keyof Omit<FormData, 'confirm_password'>],
+              type: 'Server'
+            })
+          })
+        }
+      }
+    }
   })
 
   const onSubmit = handleSubmit((data) => {
@@ -35,11 +70,7 @@ const Register = () => {
       }
     })
   })
-
-
-
-  const formValues = watch()
-
+  
   return (
     <div className='bg-orange-600'>
       <div className='container-custom'>
