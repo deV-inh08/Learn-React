@@ -11,11 +11,12 @@ import { ErrorResponse } from '../../types/util.type.ts'
 import { useContext } from 'react'
 import { AppContext } from '../../contexts/app.context.tsx'
 import Button from '../../components/Button/Button.tsx'
+import { path } from '../../constants/path.ts'
 
 export type FormData = SchemaType
 
 const Register = () => {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
   const {
     register,
@@ -32,9 +33,10 @@ const Register = () => {
   const registerMutation = useMutation({
     // mutaion: Handle Call API
     mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body),
-    onSuccess: () => {
+    onSuccess: (data) => {
       setIsAuthenticated(true)
       navigate('/')
+      setProfile(data.data.data.user)
     }
   })
 
@@ -160,14 +162,11 @@ const Register = () => {
                 >
                   Đăng kí
                 </Button>
-                {/* <button type='submit' className='w-full bg-orange-600 text-white text-xl py-3 text-center'>
-                  Đăng kí
-                </button> */}
               </div>
               <div className='mt-8 text-center'>
                 <div className='flex items-center justify-center gap-3'>
                   <span className='text-gray-400'>Bạn đã có tài khoản?</span>
-                  <Link to='/login' className='text-orange-600'>
+                  <Link to={path.login} className='text-orange-600'>
                     Đăng nhập
                   </Link>
                 </div>

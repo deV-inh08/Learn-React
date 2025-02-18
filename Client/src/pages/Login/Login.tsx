@@ -13,7 +13,7 @@ import { AppContext } from '../../contexts/app.context'
 import Button from '../../components/Button'
 
 const Login = () => {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
   const {
     register,
@@ -48,6 +48,7 @@ const Login = () => {
         } else {
           setIsAuthenticated(true)
           navigate('/')
+          setProfile(data.data.data.user)
         }
       }
     })

@@ -4,13 +4,15 @@ import Popover from '../Popover'
 import { useMutation } from '@tanstack/react-query'
 import { useContext } from 'react'
 import { AppContext } from '../../contexts/app.context'
+import { path } from '../../constants/path'
 
 const Header = () => {
-  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
+  const { isAuthenticated, setIsAuthenticated, setProfile, profile } = useContext(AppContext)
   const logoutMutation = useMutation({
     mutationFn: logoutAccount,
     onSuccess: () => {
       setIsAuthenticated(false)
+      setProfile(null)
     }
   })
   const handleLogout = () => {
@@ -144,7 +146,7 @@ const Header = () => {
                             className='w-full h-full object-cover rounded-full'
                           />
                         </div>
-                        <p>Tran Duong Vinh</p>
+                        <p>{profile?.email.split('@')[0]}</p>
                       </>
                     )}
                   </>
@@ -153,9 +155,9 @@ const Header = () => {
             )}
             {!isAuthenticated && (
               <div className='flex gap-x-3 items-center'>
-                <Link className='hover:text-gray-300' to='/register'>Đăng kí</Link>
+                <Link className='hover:text-gray-300' to={path.register}>Đăng kí</Link>
                 <span className='w-[1px] h-4 bg-gray-300'></span>
-                <Link className='hover:text-gray-300' to='/login'>Đăng nhập</Link>
+                <Link className='hover:text-gray-300' to={path.login}>Đăng nhập</Link>
               </div>
             )}
           </div>
