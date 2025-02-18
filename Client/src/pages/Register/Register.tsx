@@ -10,6 +10,7 @@ import { isAxiosUnprocessableEntityError } from '../../utils/uitls.ts'
 import { ErrorResponse } from '../../types/util.type.ts'
 import { useContext } from 'react'
 import { AppContext } from '../../contexts/app.context.tsx'
+import Button from '../../components/Button/Button.tsx'
 
 export type FormData = SchemaType
 
@@ -151,9 +152,17 @@ const Register = () => {
               ></Input>
 
               <div className='mt-5'>
-                <button type='submit' className='w-full bg-orange-600 text-white text-xl py-3 text-center'>
+                <Button
+                  type='submit'
+                  className='flex items-center justify-center w-full bg-orange-600 text-white text-xl py-3 text-center'
+                  disabled={registerMutation.isPending}
+                  isLoading={registerMutation.isPending}
+                >
                   Đăng kí
-                </button>
+                </Button>
+                {/* <button type='submit' className='w-full bg-orange-600 text-white text-xl py-3 text-center'>
+                  Đăng kí
+                </button> */}
               </div>
               <div className='mt-8 text-center'>
                 <div className='flex items-center justify-center gap-3'>

@@ -10,6 +10,7 @@ import { isAxiosUnprocessableEntityError } from '../../utils/uitls'
 import { ErrorResponse } from '../../types/util.type'
 import { useContext } from 'react'
 import { AppContext } from '../../contexts/app.context'
+import Button from '../../components/Button'
 
 const Login = () => {
   const { setIsAuthenticated } = useContext(AppContext)
@@ -87,9 +88,17 @@ const Login = () => {
                 rules={rules.password}
               ></Input>
               <div className='mt-5'>
-                <button type='submit' className='w-full bg-orange-600 text-white text-center py-4'>
+                <Button
+                  type='submit'
+                  className='flex items-center justify-center w-full py-4 px-2 bg-orange-600 text-white text-center' 
+                  isLoading={loginMutation.isPending}
+                  disabled={loginMutation.isPending}
+                >
                   Đăng nhập
-                </button>
+                </Button>
+                {/* <button type='submit' className='w-full bg-orange-600 text-white text-center py-4'>
+                  Đăng nhập
+                </button> */}
               </div>
               <div className='mt-8 text-center'>
                 <div className='flex items-center justify-center gap-3'>
