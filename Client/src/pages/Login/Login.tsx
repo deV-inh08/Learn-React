@@ -1,15 +1,19 @@
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { omit } from 'lodash'
 import { loginAccount } from '../../apis/auth.apis'
 import { FormData } from '../Register/Register'
 import Input from '../../components/Input'
 import { getRules } from '../../utils/rules'
 import { isAxiosUnprocessableEntityError } from '../../utils/uitls'
-import { ResponseApi } from '../../types/util.type'
+import { ErrorResponse } from '../../types/util.type'
+import { useContext } from 'react'
+import { AppContext } from '../../contexts/app.context'
 
 const Login = () => {
+  const { setIsAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
   const {
     register,
     getValues,
@@ -30,7 +34,7 @@ const Login = () => {
     const body = omit(data, 'confirm_password')
     loginMutation.mutate(body, {
       onSuccess: (data) => {
-        if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(data)) {
+        if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<FormData, 'confirm_password'>>>(data)) {
           const formError = data.response?.data.data
           if (formError) {
             Object.keys(formError).forEach((key) => {
@@ -41,7 +45,8 @@ const Login = () => {
             })
           }
         } else {
-          console.log(data)
+          setIsAuthenticated(true)
+          navigate('/')
         }
       }
     })

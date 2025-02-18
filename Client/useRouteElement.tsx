@@ -1,3 +1,4 @@
+import { JSX, useContext } from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import ProductList from './src/pages/ProductList'
 import Login from './src/pages/Login'
@@ -6,14 +7,16 @@ import RegisterLayout from './src/layouts/RegisterLayout'
 import MainLayout from './src/layouts/MainLayout'
 import NotFound from './src/pages/NotFound/NotFound'
 import Profile from './src/pages/Profile'
+import { AppContext } from './src/contexts/app.context'
 
-const isAuthenticated = true
 
-const ProtectRoute = () => {
+const ProtectRoute = (): JSX.Element => {
+  const { isAuthenticated } = useContext(AppContext)
   return isAuthenticated ? <Outlet /> : <Navigate to='/login' />
 }
 
-const RejectedRoute = () => {
+const RejectedRoute = (): JSX.Element => {
+  const { isAuthenticated } = useContext(AppContext)
   return !isAuthenticated ? <Outlet /> : <Navigate to='/' />
 }
 

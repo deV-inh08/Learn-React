@@ -11,3 +11,6 @@ export const registerAccount = (body: Body) => http.post<AuthReponse>('/register
 
 // Call API '/login', Recive 'body' includes email: string && password: string
 export const loginAccount = (body: Body) => http.post('/login', body)
+
+// Call API '/logout'
+export const logoutAccount = () => http.post('/logout')

@@ -1,17 +1,21 @@
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { omit } from 'lodash'
 import { getRules, schema, Schema as SchemaType } from '../../utils/rules'
 import Input from '../../components/Input'
 import { registerAccount } from '../../apis/auth.apis.ts'
 import { isAxiosUnprocessableEntityError } from '../../utils/uitls.ts'
-import { ResponseApi } from '../../types/util.type.ts'
+import { ErrorResponse } from '../../types/util.type.ts'
+import { useContext } from 'react'
+import { AppContext } from '../../contexts/app.context.tsx'
 
 export type FormData = SchemaType
 
 const Register = () => {
+  const { setIsAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
   const {
     register,
     getValues,
@@ -26,7 +30,11 @@ const Register = () => {
 
   const registerMutation = useMutation({
     // mutaion: Handle Call API
-    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body),
+    onSuccess: () => {
+      setIsAuthenticated(true)
+      navigate('/')
+    }
   })
 
   const onSubmit = handleSubmit((data) => {
@@ -34,7 +42,7 @@ const Register = () => {
     registerMutation.mutate(body, {
       // When Success and Error
       onSuccess: (data) => {
-        if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(data)) {
+        if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<FormData, 'confirm_password'>>>(data)) {
           const formError = data.response?.data.data
           if (formError?.email) {
             setError('email', {
@@ -55,7 +63,7 @@ const Register = () => {
       // When Error
       // onError: (error) => {
       //   // Form Error is { message: string, Data: { email: string; password: string } }
-      //   if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
+      //   if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
       //     const formError = error.response?.data.data
       //     if (formError?.email) {
       //       setError('email', {
