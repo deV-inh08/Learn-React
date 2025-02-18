@@ -105,7 +105,7 @@ const Header = () => {
               className='flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6'
               renderPopover={
                 <div>
-                  <Link to='/' className='block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
+                  <Link to='/profile' className='block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
                     Tài khoản của tôi
                   </Link>
                   <Link to='/' className='block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
