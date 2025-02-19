@@ -51,7 +51,7 @@ const AsideFilter = () => {
             ></polyline>
           </g>
         </svg>
-        Bộ lọc tìm kiếm
+        <span className='ml-2'>Bộ lọc tìm kiếm</span>
       </Link>
       <div className='bg-gray-500 h-[1px] my-4'></div>
       <div className='mt-2'>
