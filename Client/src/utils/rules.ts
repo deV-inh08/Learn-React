@@ -63,7 +63,6 @@ export const getRules = (getValues?: UseFormGetValues<FormData>): Rules<FormData
   }
 })
 
-
 // Validate with Yup
 export const schema = yup.object({
   email: yup

@@ -43,7 +43,6 @@ const useRouteElement = () => {
               <Profile />
             </MainLayout>
           )
-
         }
       ]
     },

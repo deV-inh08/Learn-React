@@ -18,7 +18,6 @@ class Http {
         'Content-Type': 'application/json'
       }
     })
-
     // Add a response interceptor
     this.instance.interceptors.response.use(
       (response) => {
@@ -52,7 +51,6 @@ class Http {
         return error
       }
     )
-
     // Add request interceptor
     this.instance.interceptors.request.use(
       (config) => {

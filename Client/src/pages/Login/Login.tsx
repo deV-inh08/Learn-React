@@ -91,7 +91,7 @@ const Login = () => {
               <div className='mt-5'>
                 <Button
                   type='submit'
-                  className='flex items-center justify-center w-full py-4 px-2 bg-orange-600 text-white text-center' 
+                  className='flex items-center justify-center w-full py-4 px-2 bg-orange-600 text-white text-center'
                   isLoading={loginMutation.isPending}
                   disabled={loginMutation.isPending}
                 >
