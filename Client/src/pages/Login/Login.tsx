@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { omit } from 'lodash'
-import { loginAccount } from '../../apis/auth.apis'
+import authApi from '../../apis/auth.apis'
 import { FormData } from '../Register/Register'
 import Input from '../../components/Input'
 import { getRules } from '../../utils/rules'
@@ -28,7 +28,7 @@ const Login = () => {
 
   // create mutaion with React query
   const loginMutation = useMutation({
-    mutationFn: (body: Omit<FormData, 'confirm_password'>) => loginAccount(body)
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.loginAccount(body)
   })
 
   const onSubmit = handleSubmit((data: Omit<FormData, 'confirm_password'>) => {

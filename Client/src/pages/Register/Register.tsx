@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link, useNavigate } from 'react-router-dom'
 import { omit } from 'lodash'
+import authApi from '../../apis/auth.apis.ts'
 import { getRules, schema, Schema as SchemaType } from '../../utils/rules'
 import Input from '../../components/Input'
-import { registerAccount } from '../../apis/auth.apis.ts'
 import { isAxiosUnprocessableEntityError } from '../../utils/uitls.ts'
 import { ErrorResponse } from '../../types/util.type.ts'
 import { useContext } from 'react'
@@ -32,7 +32,7 @@ const Register = () => {
 
   const registerMutation = useMutation({
     // mutaion: Handle Call API
-    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body),
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body),
     onSuccess: (data) => {
       setIsAuthenticated(true)
       navigate('/')
