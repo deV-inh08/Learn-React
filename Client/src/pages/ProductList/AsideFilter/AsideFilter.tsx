@@ -1,32 +1,42 @@
 import { createSearchParams, Link } from 'react-router-dom'
+import { useForm, Controller } from 'react-hook-form'
+import classNames from 'classnames'
+import * as yup from 'yup'
+import { schema, priceSchema as Schema} from '../../../utils/rules'
 import { path } from '../../../constants/path'
 import Button from '../../../components/Button'
 import { QueryConfig } from '../ProductList'
 import { Category } from '../../../types/category.type'
-import classNames from 'classnames'
 import InputNumber from '../../../components/InputNumber'
-import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 interface Props {
   queryConfig: QueryConfig
   categories: Category[]
 }
 
-type FormData = {
-  price_min: string
-  price_max: string
-}
+type FormDataPrice = Omit<yup.InferType<typeof schema>, 'email' | 'password' | 'confirm_password'>
 
 const AsideFilter = ({ categories, queryConfig }: Props) => {
   const { category } = queryConfig
-  const { control, handleSubmit, watch } = useForm<FormData>({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors }
+  } = useForm<FormDataPrice>({
     defaultValues: {
       price_min: '',
       price_max: ''
-    }
+    },
+    resolver: yupResolver(Schema)
   })
   const valueForm = watch()
+  console.log(errors)
   console.log(valueForm)
+  const handleSubmitPrice = handleSubmit((data) => {
+    console.log(data)
+  })
   return (
     <div className='py-4'>
       <Link
@@ -96,7 +106,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
       <div className='bg-gray-500 h-[1px] my-4'></div>
       <div className='mt-2'>
         <p>Khoản giá</p>
-        <form action='' className='mt-2'>
+        <form action='' className='mt-2' onSubmit={handleSubmitPrice}>
           <div className='flex items-start'>
             {/* <Input
               type='text'
@@ -115,9 +125,11 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
                     type='text'
                     className='grow h-[2rem]'
                     name='from'
+                    classNameError='hidden'
                     placeholder='đ Từ'
                     onChange={(event) => field.onChange(event)}
                     value={field.value}
+                    ref={field.ref}
                   ></InputNumber>
                 )
               }}
@@ -140,15 +152,18 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
                     type='text'
                     className='grow h-[2rem]'
                     name='to'
+                    classNameError='hidden'
                     placeholder='đ Đến'
                     onChange={(event) => field.onChange(event)}
                     value={field.value}
+                    ref={field.ref}
                   ></InputNumber>
                 )
               }}
             ></Controller>
           </div>
-          <Button className='w-full p-2 uppercase bg-orange-500 text-white text-sm hover:bg-orange-500/70 flex justify-center items-center'>
+          <p className='mt-1 text-red-600 max-h-[15px] text-sm text-center'>{errors.price_min?.message}</p>
+          <Button className='w-full p-2 uppercase bg-orange-500 text-white text-sm hover:bg-orange-500/70 flex justify-center items-center mt-3'>
             Áp dụng
           </Button>
         </form>

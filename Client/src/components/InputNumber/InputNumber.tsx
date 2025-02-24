@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { InputHTMLAttributes } from 'react'
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
@@ -7,14 +7,37 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   classNameError?: string
 }
 
-const InputNumber = ({
+// const InputNumber = ({
+//   className,
+//   errorMessage,
+//   classNameInput = 'p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm',
+//   classNameError = 'mt-1 text-red-600 max-h-[15px] text-sm',
+//   onChange,
+//   ...rest
+// }: Props) => {
+//   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     const { value } = event.target
+//     if ((/^\d+$/.test(value) || value == '') && onChange) {
+//       onChange(event)
+//     }
+//   }
+//   return (
+//     <div className={className}>
+//       <input className={classNameInput} {...rest} onChange={(e) => handleChange(e)} />
+//       <div className={classNameError}>{errorMessage}</div>
+//     </div>
+//   )
+// }
+
+const InputNumber = forwardRef<HTMLInputElement, Props>(function InputNumberInner({
   className,
   errorMessage,
   classNameInput = 'p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm',
   classNameError = 'mt-1 text-red-600 max-h-[15px] text-sm',
   onChange,
   ...rest
-}: Props) => {
+}, ref
+) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     if ((/^\d+$/.test(value) || value == '') && onChange) {
@@ -23,10 +46,10 @@ const InputNumber = ({
   }
   return (
     <div className={className}>
-      <input className={classNameInput} {...rest} onChange={(e) => handleChange(e)} />
+      <input className={classNameInput} {...rest} onChange={(e) => handleChange(e)} ref={ref} />
       <div className={classNameError}>{errorMessage}</div>
     </div>
   )
-}
+})
 
 export default InputNumber

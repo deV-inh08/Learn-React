@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Link, useNavigate } from 'react-router-dom'
 import { omit } from 'lodash'
 import authApi from '../../apis/auth.apis.ts'
-import { getRules, schema, Schema as SchemaType } from '../../utils/rules'
+import { getRules, emailPasswordSchema, SchemaTypeEmail as SchemaType } from '../../utils/rules'
 import Input from '../../components/Input'
 import { isAxiosUnprocessableEntityError } from '../../utils/uitls.ts'
 import { ErrorResponse } from '../../types/util.type.ts'
@@ -25,7 +25,7 @@ const Register = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(emailPasswordSchema)
   })
 
   const rules = getRules(getValues)
