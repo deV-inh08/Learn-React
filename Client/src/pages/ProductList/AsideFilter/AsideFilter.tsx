@@ -1,23 +1,35 @@
-import React from 'react'
 import { createSearchParams, Link } from 'react-router-dom'
 import { path } from '../../../constants/path'
-import Input from '../../../components/Input'
 import Button from '../../../components/Button'
 import { QueryConfig } from '../ProductList'
 import { Category } from '../../../types/category.type'
 import classNames from 'classnames'
+import InputNumber from '../../../components/InputNumber'
+import { useForm, Controller } from 'react-hook-form'
 
 interface Props {
   queryConfig: QueryConfig
   categories: Category[]
 }
 
+type FormData = {
+  price_min: string
+  price_max: string
+}
+
 const AsideFilter = ({ categories, queryConfig }: Props) => {
   const { category } = queryConfig
-
+  const { control, handleSubmit, watch } = useForm<FormData>({
+    defaultValues: {
+      price_min: '',
+      price_max: ''
+    }
+  })
+  const valueForm = watch()
+  console.log(valueForm)
   return (
     <div className='py-4'>
-      <Link 
+      <Link
         to={path.home}
         className={classNames('flex items-center font-bold', {
           'text-orange-600': !category
@@ -86,21 +98,55 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
         <p>Khoản giá</p>
         <form action='' className='mt-2'>
           <div className='flex items-start'>
-            <Input
+            {/* <Input
               type='text'
               className='grow h-[2rem]'
               name='from'
               placeholder='đ Từ'
               classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-            />
-            <div className='mx-2 mt-2 shrink-0'>-</div>
-            <Input
-              type='text'
-              className='grow'
-              name='to'
-              placeholder='đ Đến'
+            /> */}
+            <Controller
+              control={control}
+              name='price_min'
+              render={({ field }) => {
+                return (
+                  <InputNumber
+                    classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
+                    type='text'
+                    className='grow h-[2rem]'
+                    name='from'
+                    placeholder='đ Từ'
+                    onChange={(event) => field.onChange(event)}
+                    value={field.value}
+                  ></InputNumber>
+                )
+              }}
+            ></Controller>
+            {/* <InputNumber
               classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-            />
+              type='text'
+              className='grow h-[2rem]'
+              name='from'
+              placeholder='đ Từ'
+            ></InputNumber> */}
+            <div className='mx-2 mt-2 shrink-0'>-</div>
+            <Controller
+              control={control}
+              name='price_max'
+              render={({ field }) => {
+                return (
+                  <InputNumber
+                    classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
+                    type='text'
+                    className='grow h-[2rem]'
+                    name='to'
+                    placeholder='đ Đến'
+                    onChange={(event) => field.onChange(event)}
+                    value={field.value}
+                  ></InputNumber>
+                )
+              }}
+            ></Controller>
           </div>
           <Button className='w-full p-2 uppercase bg-orange-500 text-white text-sm hover:bg-orange-500/70 flex justify-center items-center'>
             Áp dụng
