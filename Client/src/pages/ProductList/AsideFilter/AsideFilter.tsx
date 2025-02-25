@@ -1,21 +1,23 @@
-import { createSearchParams, Link } from 'react-router-dom'
+import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import { useForm, Controller } from 'react-hook-form'
 import classNames from 'classnames'
-import * as yup from 'yup'
-import { schema, priceSchema as Schema} from '../../../utils/rules'
+import { priceSchema, Schema } from '../../../utils/rules'
 import { path } from '../../../constants/path'
 import Button from '../../../components/Button'
 import { QueryConfig } from '../ProductList'
 import { Category } from '../../../types/category.type'
 import InputNumber from '../../../components/InputNumber'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { NoUndefinedField } from '../../../types/util.type'
 
 interface Props {
   queryConfig: QueryConfig
   categories: Category[]
 }
 
-type FormDataPrice = Omit<yup.InferType<typeof schema>, 'email' | 'password' | 'confirm_password'>
+// type FormDataPrice = Omit<yup.InferType<typeof schema>, 'email' | 'password' | 'confirm_password'>
+// or, you can use Pick
+type FormDataPrice = NoUndefinedField<Pick<Schema, 'price_min' | 'price_max'>>
 
 const AsideFilter = ({ categories, queryConfig }: Props) => {
   const { category } = queryConfig
@@ -23,19 +25,27 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
     control,
     handleSubmit,
     watch,
+    trigger,
     formState: { errors }
   } = useForm<FormDataPrice>({
     defaultValues: {
       price_min: '',
       price_max: ''
     },
-    resolver: yupResolver(Schema)
+    resolver: yupResolver(priceSchema),
+    shouldFocusError: false
   })
+  const navigate = useNavigate()
   const valueForm = watch()
-  console.log(errors)
-  console.log(valueForm)
   const handleSubmitPrice = handleSubmit((data) => {
-    console.log(data)
+    navigate({
+      pathname: path.home,
+      search: createSearchParams({
+        ...queryConfig,
+        price_max: data.price_max,
+        price_min: data.price_min
+      }).toString()
+    })
   })
   return (
     <div className='py-4'>
@@ -108,13 +118,6 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
         <p>Khoản giá</p>
         <form action='' className='mt-2' onSubmit={handleSubmitPrice}>
           <div className='flex items-start'>
-            {/* <Input
-              type='text'
-              className='grow h-[2rem]'
-              name='from'
-              placeholder='đ Từ'
-              classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-            /> */}
             <Controller
               control={control}
               name='price_min'
@@ -127,20 +130,16 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
                     name='from'
                     classNameError='hidden'
                     placeholder='đ Từ'
-                    onChange={(event) => field.onChange(event)}
+                    onChange={(event) => {
+                      field.onChange(event)
+                      trigger('price_max')
+                    }}
                     value={field.value}
                     ref={field.ref}
                   ></InputNumber>
                 )
               }}
             ></Controller>
-            {/* <InputNumber
-              classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-              type='text'
-              className='grow h-[2rem]'
-              name='from'
-              placeholder='đ Từ'
-            ></InputNumber> */}
             <div className='mx-2 mt-2 shrink-0'>-</div>
             <Controller
               control={control}
@@ -154,7 +153,10 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
                     name='to'
                     classNameError='hidden'
                     placeholder='đ Đến'
-                    onChange={(event) => field.onChange(event)}
+                    onChange={(event) => {
+                      field.onChange(event)
+                      trigger('price_min')
+                    }}
                     value={field.value}
                     ref={field.ref}
                   ></InputNumber>
@@ -177,21 +179,6 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
               .fill(0)
               .map((_, index) => {
                 return (
-                  //   <svg viewBox='0 0 30 30' className='mr-1 h-4 w-4' key={index}>
-                  //   <defs>
-                  //     <linearGradient id='star__hollow' x1='50%' x2='50%' y1='0%' y2='99.0177926%'>
-                  //       <stop offset='0%' stopColor='#FFD211' />
-                  //       <stop offset='100%' stopColor='#FFAD27' />
-                  //     </linearGradient>
-                  //   </defs>
-                  //   <path
-                  //     fill='none'
-                  //     fillRule='evenodd'
-                  //     stroke='url(#star__hollow)'
-                  //     strokeWidth={2}
-                  //     d='M23.226809 28.390899l-1.543364-9.5505903 6.600997-6.8291523-9.116272-1.4059447-4.01304-8.63019038-4.013041 8.63019038-9.116271 1.4059447 6.600997 6.8291523-1.543364 9.5505903 8.071679-4.5038874 8.071679 4.5038874z'
-                  //   />
-                  // </svg>
                   <svg viewBox='0 0 9.5 8' className='mr-1 h-4 w-4' key={index}>
                     <defs>
                       <linearGradient id='ratingStarGradient' x1='50%' x2='50%' y1='0%' y2='100%'>
@@ -228,21 +215,6 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
               .fill(0)
               .map((_, index) => {
                 return (
-                  //   <svg viewBox='0 0 30 30' className='mr-1 h-4 w-4' key={index}>
-                  //   <defs>
-                  //     <linearGradient id='star__hollow' x1='50%' x2='50%' y1='0%' y2='99.0177926%'>
-                  //       <stop offset='0%' stopColor='#FFD211' />
-                  //       <stop offset='100%' stopColor='#FFAD27' />
-                  //     </linearGradient>
-                  //   </defs>
-                  //   <path
-                  //     fill='none'
-                  //     fillRule='evenodd'
-                  //     stroke='url(#star__hollow)'
-                  //     strokeWidth={2}
-                  //     d='M23.226809 28.390899l-1.543364-9.5505903 6.600997-6.8291523-9.116272-1.4059447-4.01304-8.63019038-4.013041 8.63019038-9.116271 1.4059447 6.600997 6.8291523-1.543364 9.5505903 8.071679-4.5038874 8.071679 4.5038874z'
-                  //   />
-                  // </svg>
                   <svg viewBox='0 0 9.5 8' className='mr-1 h-4 w-4' key={index}>
                     <defs>
                       <linearGradient id='ratingStarGradient' x1='50%' x2='50%' y1='0%' y2='100%'>

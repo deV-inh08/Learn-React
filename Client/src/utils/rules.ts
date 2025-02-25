@@ -63,6 +63,14 @@ export const getRules = (getValues?: UseFormGetValues<FormData>): Rules<FormData
   }
 })
 
+function testPriceMinMax(this: yup.TestContext<yup.AnyObject>) {
+  const { price_min, price_max } = this.parent as { price_min: string; price_max: string }
+  if (price_min !== '' && price_max !== '') {
+    return Number(price_max) >= Number(price_min)
+  }
+  return price_min !== '' || price_max !== ''
+}
+
 // Validate with Yup
 export const schema = yup.object({
   email: yup
@@ -81,40 +89,19 @@ export const schema = yup.object({
     .required('Confirm password là bắt buộc !')
     .min(6, 'Độ dài từ 6 - 160 ký tự')
     .max(160, 'Độ dài từ 6 - 160 ký tự'),
-  price_min: yup
-    .string()
-    .required('Giá không phù hợp')
-    .test({
-      name: 'price-not-allowed',
-      message: 'Giá không phù hợp',
-      test: function (value) {
-        const price_min = value as string
-        const { price_max } = this.parent as { price_min: string; price_max: string }
-        if (price_min !== '' && price_max !== '') {
-          return Number(price_max) >= Number(price_min)
-        } else {
-          return price_min !== '' || price_max !== ''
-        }
-      }
-    }),
-  price_max: yup
-    .string()
-    .required('Giá không phù hợp')
-    .test({
-      name: 'price-not-allowed',
-      message: 'Giá không phù hợp',
-      test: function (value) {
-        const price_max = value as string
-        const { price_min } = this.parent as { price_min: string; price_max: string }
-        if (price_min !== '' && price_max !== '') {
-          return Number(price_max) >= Number(price_min)
-        } else {
-          return price_min !== '' || price_max !== ''
-        }
-      }
-    })
+  price_min: yup.string().required('Giá không phù hợp').test({
+    name: 'price-not-allowed',
+    message: 'Giá không phù hợp',
+    test: testPriceMinMax
+  }),
+  price_max: yup.string().required('Giá không phù hợp').test({
+    name: 'price-not-allowed',
+    message: 'Giá không phù hợp',
+    test: testPriceMinMax
+  })
 })
 export const emailPasswordSchema = schema.pick(['email', 'password', 'confirm_password'])
 export const priceSchema = schema.pick(['price_min', 'price_max'])
 
 export type SchemaTypeEmail = Omit<yup.InferType<typeof schema>, 'price_min' | 'price_max'>
+export type Schema = yup.InferType<typeof schema>

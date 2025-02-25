@@ -53,7 +53,7 @@ const ProductList = () => {
         {productsData && (
           <div className='grid grid-cols-12 gap-6'>
             <div className='col-span-3'>
-              <AsideFilter categories={categoryData?.data.data || []} queryConfig={queryConfig}/>
+              <AsideFilter categories={categoryData?.data.data || []} queryConfig={queryConfig} />
             </div>
             <div className='col-span-9'>
               <SortProductList />
