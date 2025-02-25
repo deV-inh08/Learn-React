@@ -1,9 +1,9 @@
-import { QueryConfig } from "../../ProductList"
-import { sort_by as sortBy, order as orderConstant } from "../../../../constants/product"
-import { createSearchParams, useNavigate } from "react-router-dom"
-import { path } from "../../../../constants/path"
-import { ProductListConfig } from "../../../../types/product.type"
-import classNames from "classnames"
+import { QueryConfig } from '../../ProductList'
+import { sort_by as sortBy, order as orderConstant } from '../../../../constants/product'
+import { createSearchParams, useNavigate } from 'react-router-dom'
+import { path } from '../../../../constants/path'
+import { ProductListConfig } from '../../../../types/product.type'
+import classNames from 'classnames'
 
 interface Props {
   queryConfig: QueryConfig
@@ -15,7 +15,9 @@ const SortProductList = ({ queryConfig }: Props) => {
   const navigate = useNavigate()
   const { sort_by = sortBy.createdAt } = queryConfig
 
-  const isActiveSortByButton = (sortByValue: Exclude<ProductListConfig['sort_by'], undefined> | FilterPriceType): boolean => {
+  const isActiveSortByButton = (
+    sortByValue: Exclude<ProductListConfig['sort_by'], undefined> | FilterPriceType
+  ): boolean => {
     return sort_by === sortByValue
   }
 
@@ -85,7 +87,9 @@ const SortProductList = ({ queryConfig }: Props) => {
             <option className='bg-white text-black' value={orderConstant.acs}>
               Thấp đến cao
             </option>
-            <option className='bg-white text-black' value={orderConstant.desc}>Cao đến thấp</option>
+            <option className='bg-white text-black' value={orderConstant.desc}>
+              Cao đến thấp
+            </option>
           </select>
         </div>
         <div className='flex items-center'>

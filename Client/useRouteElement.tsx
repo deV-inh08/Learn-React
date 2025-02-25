@@ -9,6 +9,7 @@ import RegisterLayout from './src/layouts/RegisterLayout'
 import MainLayout from './src/layouts/MainLayout'
 import NotFound from './src/pages/NotFound/NotFound'
 import Profile from './src/pages/Profile'
+import ProductDetail from './src/pages/ProductDetail'
 
 const ProtectRoute = (): JSX.Element => {
   const { isAuthenticated } = useContext(AppContext)
@@ -30,6 +31,15 @@ const useRouteElement = () => {
         </MainLayout>
       ),
       index: true // set main page
+    },
+    {
+      path: path.productDetail,
+      element: (
+        <MainLayout>
+          <ProductDetail />
+        </MainLayout>
+      ),
+      index: true
     },
     // Protect Route
     {

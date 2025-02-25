@@ -10,7 +10,7 @@ interface Props {
 
 const Product = ({ product }: Props) => {
   return (
-    <Link to={path.home}>
+    <Link to={`${path.home}${product._id}`}>
       <div className='bg-white shadow rounded-sm hover:translate-y-[-0.0625rem] hover:shadow-md duration-100 transition-transform'>
         <div className='w-full pt-[100%] relative'>
           <img
