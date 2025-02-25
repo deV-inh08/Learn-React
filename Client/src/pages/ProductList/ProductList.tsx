@@ -1,7 +1,7 @@
 import { omitBy, isUndefined } from 'lodash'
-import AsideFilter from './AsideFilter'
-import SortProductList from './SortProductList'
-import Product from './Product/Product'
+import AsideFilter from './components/AsideFilter'
+import SortProductList from './components/SortProductList'
+import Product from './components/Product/Product'
 import { useQuery, keepPreviousData } from '@tanstack/react-query'
 import useQueryParam from '../../hooks/useQueryParam'
 import productApi from '../../apis/product.api'
@@ -27,7 +27,8 @@ const ProductList = () => {
       price_min: queryParams.price_min,
       rating_filter: queryParams.rating_filter,
       sort_by: queryParams.sort_by,
-      category: queryParams.category
+      category: queryParams.category,
+      order: queryParams.order
     },
     isUndefined
   )
@@ -56,7 +57,7 @@ const ProductList = () => {
               <AsideFilter categories={categoryData?.data.data || []} queryConfig={queryConfig} />
             </div>
             <div className='col-span-9'>
-              <SortProductList />
+              <SortProductList queryConfig={queryConfig} />
               <div className='mt-6 grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3'>
                 {productsData &&
                   productsData.data.data.products.map((item, index) => {

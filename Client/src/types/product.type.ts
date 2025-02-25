@@ -37,4 +37,5 @@ export interface ProductListConfig {
   price_max?: number
   name?: string
   category?: string
+  order?: 'desc' | 'asc'
 }
