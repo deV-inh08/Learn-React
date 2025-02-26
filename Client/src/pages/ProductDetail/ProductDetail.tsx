@@ -5,14 +5,44 @@ import productApi from '../../apis/product.api'
 import ProductRating from '../../components/ProductRating'
 import { formatCurrency, formatNumberToSocialStyle, rateSale } from '../../utils/uitls'
 import InputNumber from '../../components/InputNumber'
+import { useEffect, useMemo, useState } from 'react'
+import { Product } from '../../types/product.type'
 
 const ProductDetail = () => {
+  const [currentIndexImages, setCurrentIndexNumber] = useState([0, 5])
+  const [activeImageSlider, setActiveImageSlider] = useState('')
   const { id } = useParams()
   const { data } = useQuery({
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string)
   })
   const product = data?.data.data
+  useEffect(() => {
+    if (product && product.images.length > 0) {
+      setActiveImageSlider(product.images[0])
+    }
+  }, [product])
+
+  const currentImages = useMemo(() => {
+    return product ? product.images.slice(...currentIndexImages) : []
+  }, [product, currentIndexImages])
+
+  const chooseActiveSlider = (img: string) => {
+    setActiveImageSlider(img)
+  }
+
+  const nextSlider = () => {
+    if (currentIndexImages[1] < (product as Product).images.length) {
+      setCurrentIndexNumber([currentIndexImages[0] + 1, currentIndexImages[1] + 1])
+    }
+  }
+
+  const previousSlider = () => {
+    if (currentIndexImages[0] > 0) {
+      setCurrentIndexNumber([currentIndexImages[0] - 1, currentIndexImages[1] - 1])
+    }
+  }
+
   return (
     <div className='bg-gray-200 py-6'>
       {product && (
@@ -24,12 +54,15 @@ const ProductDetail = () => {
                   <div className='relative w-full pt-[100%] shadow'>
                     <img
                       className='absolute top-0 left-0 h-full w-full bg-white object-cover'
-                      src={product?.image}
+                      src={activeImageSlider}
                       alt={product?.name}
                     />
                   </div>
                   <div className='relative mt-4 grid grid-cols-5 gap-1'>
-                    <button className='absolute left-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'>
+                    <button
+                      className='absolute left-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
+                      onClick={previousSlider}
+                    >
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
@@ -41,10 +74,15 @@ const ProductDetail = () => {
                         <path stroke-linecap='round' stroke-linejoin='round' d='M15.75 19.5 8.25 12l7.5-7.5' />
                       </svg>
                     </button>
-                    {product?.images.slice(0, 5).map((product, index) => {
-                      const isActive = index === 0
+                    {/* slice don't count last number */}
+                    {currentImages.slice(0, 5).map((product, index) => {
+                      const isActive = product === activeImageSlider
                       return (
-                        <div className='relative w-full pt-[100%]' key={index}>
+                        <div
+                          className='relative w-full pt-[100%]'
+                          key={index}
+                          onMouseEnter={() => chooseActiveSlider(product)}
+                        >
                           <img
                             src={product}
                             alt='product'
@@ -54,7 +92,10 @@ const ProductDetail = () => {
                         </div>
                       )
                     })}
-                    <button className='absolute right-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'>
+                    <button
+                      className='absolute right-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
+                      onClick={nextSlider}
+                    >
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
