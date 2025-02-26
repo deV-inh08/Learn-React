@@ -60,15 +60,6 @@ const Login = () => {
           <div className='lg:col-span-2 lg:col-start-4'>
             <form onSubmit={onSubmit} className='p-10 rounded bg-white shadow-sm my-10'>
               <p className='text-2xl'>Đăng nhập</p>
-              {/* <div className='mt-5'>
-                <input
-                  type='email'
-                  name='email'
-                  placeholder='Enter your email'
-                  className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                />
-                <p className='mt-1 text-red-600 min-h-[1rem] text-sm'>Emal not valid</p>
-              </div> */}
               <Input
                 name='email'
                 type='email'

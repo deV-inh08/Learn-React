@@ -5,12 +5,13 @@ import productApi from '../../apis/product.api'
 import ProductRating from '../../components/ProductRating'
 import { formatCurrency, formatNumberToSocialStyle, rateSale } from '../../utils/uitls'
 import InputNumber from '../../components/InputNumber'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Product } from '../../types/product.type'
 
 const ProductDetail = () => {
   const [currentIndexImages, setCurrentIndexNumber] = useState([0, 5])
   const [activeImageSlider, setActiveImageSlider] = useState('')
+  const imgRef = useRef<HTMLImageElement>(null)
   const { id } = useParams()
   const { data } = useQuery({
     queryKey: ['product', id],
@@ -43,6 +44,25 @@ const ProductDetail = () => {
     }
   }
 
+  const handleZoom = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    // get coordinates
+    const rect = e.currentTarget.getBoundingClientRect()
+    const image = imgRef.current as HTMLImageElement
+    const { naturalWidth, naturalHeight } = image
+    const { offsetX, offsetY } = e.nativeEvent
+    const top = offsetY * (1 - naturalHeight / rect.height)
+    const left = offsetX * (1 - naturalWidth / rect.height)
+    image.style.width = naturalWidth + 'px'
+    image.style.height = naturalHeight + 'px'
+    image.style.maxWidth = 'unset'
+    image.style.top = top + 'px'
+    image.style.left = left + 'px'
+  }
+
+  const handleRemoveZoom = () => {
+    imgRef.current?.removeAttribute('style')
+  }
+
   return (
     <div className='bg-gray-200 py-6'>
       {product && (
@@ -51,11 +71,16 @@ const ProductDetail = () => {
             <div className='container-custom'>
               <div className='grid grid-cols-12 gap-9'>
                 <div className='col-span-5'>
-                  <div className='relative w-full pt-[100%] shadow'>
+                  <div 
+                    className='relative w-full pt-[100%] shadow overflow-hidden'
+                    onMouseMove={handleZoom}
+                    onMouseLeave={handleRemoveZoom}
+                  >
                     <img
-                      className='absolute top-0 left-0 h-full w-full bg-white object-cover'
+                      className='absolute top-0 left-0 pointer-events-none h-full w-full bg-white object-cover'
                       src={activeImageSlider}
                       alt={product?.name}
+                      ref={imgRef}
                     />
                   </div>
                   <div className='relative mt-4 grid grid-cols-5 gap-1'>
@@ -81,7 +106,7 @@ const ProductDetail = () => {
                         <div
                           className='relative w-full pt-[100%]'
                           key={index}
-                          onMouseEnter={() => chooseActiveSlider(product)}
+                          onClick={() => chooseActiveSlider(product)}
                         >
                           <img
                             src={product}
