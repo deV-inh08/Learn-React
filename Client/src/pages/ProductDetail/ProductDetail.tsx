@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify'
 import { useParams } from 'react-router-dom'
 import productApi from '../../apis/product.api'
 import ProductRating from '../../components/ProductRating'
-import { formatCurrency, formatNumberToSocialStyle, rateSale } from '../../utils/uitls'
+import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from '../../utils/uitls'
 import InputNumber from '../../components/InputNumber'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Product } from '../../types/product.type'
@@ -12,7 +12,8 @@ const ProductDetail = () => {
   const [currentIndexImages, setCurrentIndexNumber] = useState([0, 5])
   const [activeImageSlider, setActiveImageSlider] = useState('')
   const imgRef = useRef<HTMLImageElement>(null)
-  const { id } = useParams()
+  const { nameId } = useParams()
+  const id = getIdFromNameId(nameId as string)
   const { data } = useQuery({
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string)
@@ -71,7 +72,7 @@ const ProductDetail = () => {
             <div className='container-custom'>
               <div className='grid grid-cols-12 gap-9'>
                 <div className='col-span-5'>
-                  <div 
+                  <div
                     className='relative w-full pt-[100%] shadow overflow-hidden'
                     onMouseMove={handleZoom}
                     onMouseLeave={handleRemoveZoom}
