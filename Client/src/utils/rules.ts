@@ -10,7 +10,7 @@ import { FormData } from '../pages/Register/Register'
 export type Rules<T extends FieldValues> = { [K in Path<T>]: RegisterOptions<T, K> }
 
 // Validate with React hook form
-export const getRules = (getValues?: UseFormGetValues<FormData>): Rules<FormData> => ({
+export const getRules = (getValues?: UseFormGetValues<FormData>): Rules<Omit<FormData, 'name'>> => ({
   email: {
     required: {
       value: true,
@@ -98,7 +98,8 @@ export const schema = yup.object({
     name: 'price-not-allowed',
     message: 'Giá không phù hợp',
     test: testPriceMinMax
-  })
+  }),
+  name: yup.string().trim().required()
 })
 export const emailPasswordSchema = schema.pick(['email', 'password', 'confirm_password'])
 export const priceSchema = schema.pick(['price_min', 'price_max'])

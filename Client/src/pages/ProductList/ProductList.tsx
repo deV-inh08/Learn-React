@@ -1,4 +1,3 @@
-import { omitBy, isUndefined } from 'lodash'
 import AsideFilter from './components/AsideFilter'
 import SortProductList from './components/SortProductList'
 import Product from './components/Product/Product'
@@ -8,6 +7,7 @@ import productApi from '../../apis/product.api'
 import Paginate from '../../components/Paginate'
 import { ProductListConfig } from '../../types/product.type'
 import categoryApi from '../../apis/category.apis'
+import { useQueryConfig } from '../../hooks/useQueryConfig'
 // import { useSearchParams } from 'react-router-dom'
 
 export type QueryConfig = {
@@ -17,21 +17,7 @@ export type QueryConfig = {
 const ProductList = () => {
   // const [searchParams] = useSearchParams()
   const queryParams: QueryConfig = useQueryParam() // custom hook useQuery Params
-  const queryConfig: QueryConfig = omitBy(
-    {
-      page: queryParams.page || '1',
-      exclude: queryParams.exclude,
-      limit: queryParams.limit,
-      name: queryParams.name,
-      price_max: queryParams.price_max,
-      price_min: queryParams.price_min,
-      rating_filter: queryParams.rating_filter,
-      sort_by: queryParams.sort_by,
-      category: queryParams.category,
-      order: queryParams.order
-    },
-    isUndefined
-  )
+  const queryConfig = useQueryConfig()
 
   const { data: productsData } = useQuery({
     queryKey: ['product', queryParams],
