@@ -38,8 +38,7 @@ const useRouteElement = () => {
         <MainLayout>
           <ProductDetail />
         </MainLayout>
-      ),
-      index: true
+      )
     },
     // Protect Route
     {

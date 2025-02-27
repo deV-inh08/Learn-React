@@ -8,7 +8,15 @@ interface Props extends InputNumberProps {
   classNameWrapper?: string
 }
 
-const QuantityController = ({ max, onIncrease, onDecrese, onType, classNameWrapper = 'ml-10', value, ...rest }: Props) => {
+const QuantityController = ({
+  max,
+  onIncrease,
+  onDecrese,
+  onType,
+  classNameWrapper = 'ml-10',
+  value,
+  ...rest
+}: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let _value = Number(e.target.value)
     if (max !== undefined && _value > max) {
@@ -36,7 +44,7 @@ const QuantityController = ({ max, onIncrease, onDecrese, onType, classNameWrapp
     if (_value < 1) {
       _value = 1
     }
-    if(onDecrese) {
+    if (onDecrese) {
       onDecrese(_value)
     }
   }
