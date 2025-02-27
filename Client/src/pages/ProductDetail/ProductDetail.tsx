@@ -6,7 +6,8 @@ import ProductRating from '../../components/ProductRating'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from '../../utils/uitls'
 import InputNumber from '../../components/InputNumber'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Product } from '../../types/product.type'
+import { Product as ProductType, ProductListConfig } from '../../types/product.type'
+import Product from '../ProductList/components/Product'
 
 const ProductDetail = () => {
   const [currentIndexImages, setCurrentIndexNumber] = useState([0, 5])
@@ -14,11 +15,23 @@ const ProductDetail = () => {
   const imgRef = useRef<HTMLImageElement>(null)
   const { nameId } = useParams()
   const id = getIdFromNameId(nameId as string)
+
   const { data } = useQuery({
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string)
   })
   const product = data?.data.data
+
+  const queryConfig: ProductListConfig = { limit: 20, page: 1, category: product?.category._id }
+  const { data: productsData } = useQuery({
+    queryKey: ['products', queryConfig],
+    queryFn: () => {
+      return productApi.getProducts(queryConfig)
+    },
+    enabled: Boolean(product),
+    staleTime: 3 * 60 * 1000
+  })
+
   useEffect(() => {
     if (product && product.images.length > 0) {
       setActiveImageSlider(product.images[0])
@@ -34,7 +47,7 @@ const ProductDetail = () => {
   }
 
   const nextSlider = () => {
-    if (currentIndexImages[1] < (product as Product).images.length) {
+    if (currentIndexImages[1] < (product as ProductType).images.length) {
       setCurrentIndexNumber([currentIndexImages[0] + 1, currentIndexImages[1] + 1])
     }
   }
@@ -234,6 +247,23 @@ const ProductDetail = () => {
                   />
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div className='mt-8'>
+            <p className='text-2xl uppercase'>Các sản phẩm liên quan</p>
+            <div className='custom-container'>
+              {productsData && (
+                <div className='mt-6 grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-9 gap-3'>
+                  {productsData.data.data.products.map((product) => {
+                    return (
+                      <div className='col-span-1' key={product._id}>
+                        <Product product={product}></Product>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </>
