@@ -1,7 +1,6 @@
 import React, { forwardRef } from 'react'
-import { InputHTMLAttributes } from 'react'
-
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+import { InputHTMLAttributes } from 'react' 
+export interface InputNumberProps extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string
   classNameInput?: string
   classNameError?: string
@@ -14,7 +13,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 //   classNameError = 'mt-1 text-red-600 max-h-[15px] text-sm',
 //   onChange,
 //   ...rest
-// }: Props) => {
+// }: InputNumberProps) => {
 //   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 //     const { value } = event.target
 //     if ((/^\d+$/.test(value) || value == '') && onChange) {
@@ -29,7 +28,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 //   )
 // }
 
-const InputNumber = forwardRef<HTMLInputElement, Props>(function InputNumberInner(
+const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function InputNumberInner(
   {
     className,
     errorMessage,
