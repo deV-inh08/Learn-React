@@ -100,7 +100,6 @@ const Register = () => {
           <div className='lg:col-span-2 lg:col-start-4'>
             <form action='' className='p-10 rounded bg-white shadow-sm my-10' onSubmit={onSubmit} noValidate>
               <p className='text-2xl'>Đăng kí</p>
-
               {/* <div className='my-3 h-[4rem]'>
                 <input
                   type='email'
@@ -111,7 +110,6 @@ const Register = () => {
                 />
                 <p className='mt-1 text-red-600 max-h-[15px] text-sm'>{errors.email?.message}</p>
               </div> */}
-
               <Input
                 name='email'
                 type='email'
@@ -128,22 +126,6 @@ const Register = () => {
                 rules={rules.password}
                 register={register}
               ></Input>
-
-              {/* <div className='my-3 h-[4rem]'>
-                <input
-                  type='password'
-                  // name='password' => overwrite with react-hook-form when 'register' return
-                  placeholder='Confirm your password'
-                  className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                  {...register('confirm_password', {
-                    ...rules.confirm_password
-                    // validate confirm password
-                    // validate: (value) => value === getValues('password') || 'Confirm password không khớp'
-                  })}
-                />
-                <p className='mt-1 text-red-600 max-h-[15px] text-sm'>{errors.confirm_password?.message}</p>
-              </div> */}
-
               <Input
                 name='confirm_password'
                 type='password'
@@ -152,7 +134,6 @@ const Register = () => {
                 rules={rules.confirm_password} // If have Schema => Don't need rules
                 register={register}
               ></Input>
-
               <div className='mt-5'>
                 <Button
                   type='submit'

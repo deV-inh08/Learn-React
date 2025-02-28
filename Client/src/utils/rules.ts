@@ -104,5 +104,5 @@ export const schema = yup.object({
 export const emailPasswordSchema = schema.pick(['email', 'password', 'confirm_password'])
 export const priceSchema = schema.pick(['price_min', 'price_max'])
 
-export type SchemaTypeEmail = Omit<yup.InferType<typeof schema>, 'price_min' | 'price_max'>
+export type SchemaTypeEmail = Omit<yup.InferType<typeof schema>, 'price_min' | 'price_max' | 'name'>
 export type Schema = yup.InferType<typeof schema>

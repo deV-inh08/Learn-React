@@ -11,6 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { NoUndefinedField } from '../../../../types/util.type'
 import RatingStart from '../RatingStar'
 import { omit } from 'lodash'
+import InputV2 from '../../../../components/InputV2'
 
 interface Props {
   queryConfig: QueryConfig
@@ -128,7 +129,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
         <p>Khoản giá</p>
         <form action='' className='mt-2' onSubmit={handleSubmitPrice}>
           <div className='flex items-start'>
-            <Controller
+            {/* <Controller
               control={control}
               name='price_min'
               render={({ field }) => {
@@ -149,7 +150,19 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
                   ></InputNumber>
                 )
               }}
-            ></Controller>
+            ></Controller> */}
+            <InputV2
+              control={control}
+              type='number'
+              name='price_min'
+              onChange={() => {
+                trigger('price_max')
+              }}
+              className='grow'
+              placeholder='đ Từ'
+              classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
+              classNameError='hidden'
+            ></InputV2>
             <div className='mx-2 mt-2 shrink-0'>-</div>
             <Controller
               control={control}
