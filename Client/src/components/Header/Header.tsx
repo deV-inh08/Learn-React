@@ -254,7 +254,9 @@ const Header = () => {
                             : ''}
                           Thêm vào giỏ hàng
                         </p>
-                        <Link to={path.cart} className='px-4 py-3 bg-orange-600 text-white rounded-sm'>Xem giỏ hàng</Link>
+                        <Link to={path.cart} className='px-4 py-3 bg-orange-600 text-white rounded-sm'>
+                          Xem giỏ hàng
+                        </Link>
                       </div>
                     </>
                   ) : (
