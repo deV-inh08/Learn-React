@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { PurchasesStatus } from '../../constants/purchase'
 import purchaseApi from '../../apis/purchase.api'
 import { Link } from 'react-router-dom'
@@ -9,6 +9,7 @@ import Button from '../../components/Button'
 import { useEffect, useState } from 'react'
 import { PurchaseType } from '../../types/purchase.type'
 import { produce } from 'immer'
+import { keyBy } from 'lodash'
 
 interface ExtendedPurchase extends PurchaseType {
   disable: boolean
@@ -17,25 +18,38 @@ interface ExtendedPurchase extends PurchaseType {
 
 const Cart = () => {
   const [extendePurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([])
-  const { data: purchasesInCartData } = useQuery({
+  const { data: purchasesInCartData, refetch } = useQuery({
     queryKey: ['purchases', { status: PurchasesStatus.inCart }],
     queryFn: () => purchaseApi.getPurchases({ status: PurchasesStatus.inCart })
   })
+
+  const updatePurchaseMutation = useMutation({
+    mutationFn: purchaseApi.updatePurchase,
+    onSuccess: () => {
+      refetch()
+    }
+  })
+
   const purchaseInCart = purchasesInCartData?.data.data
   const isAllChecked = extendePurchases.every((purchase) => purchase.checked)
+
   useEffect(() => {
-    setExtendedPurchases(
-      purchaseInCart?.map((purchase) => ({
-        ...purchase,
-        disable: false,
-        checked: false
-      })) || []
-    )
+    setExtendedPurchases((prev) => {
+      const extendedPurchaseObject = keyBy(prev, '_id')
+      return (
+        purchaseInCart?.map((purchase) => ({
+          ...purchase,
+          disable: false,
+          checked: Boolean(extendedPurchaseObject[purchase._id])
+        })) || []
+      )
+    })
   }, [purchaseInCart])
 
-  const handleChecked = (productIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setExtendedPurchases(produce((draft) => {
-        draft[productIndex].checked = event.target.checked
+  const handleChecked = (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setExtendedPurchases(
+      produce((draft) => {
+        draft[purchaseIndex].checked = event.target.checked
       })
     )
   }
@@ -47,6 +61,29 @@ const Cart = () => {
         checked: !isAllChecked
       }))
     })
+  }
+
+  const handleQuantity = (purchaseIndex: number, value: number, enable: boolean) => {
+    if (enable) {
+      const purchase = extendePurchases[purchaseIndex]
+      setExtendedPurchases(
+        produce((draft) => {
+          draft[purchaseIndex].disable = true
+        })
+      )
+      updatePurchaseMutation.mutate({
+        product_id: purchase.product._id,
+        buy_count: value
+      })
+    }
+  }
+
+  const handleTypeQuantity = (purchaseIndex: number) => (value: number) => {
+    setExtendedPurchases(
+      produce((draft) => {
+        draft[purchaseIndex].buy_count = value
+      })
+    )
   }
 
   return (
@@ -129,6 +166,19 @@ const Cart = () => {
                             max={purchase.product.quantity}
                             value={purchase.buy_count}
                             classNameWrapper='flex items-center'
+                            onIncrease={(value) => handleQuantity(index, value, value <= purchase.product.quantity)}
+                            onDecrese={(value) => handleQuantity(index, value, value >= 1)}
+                            onType={handleTypeQuantity(index)}
+                            onFocusOut={(value) =>
+                              handleQuantity(
+                                index,
+                                value,
+                                value >= 1 &&
+                                  value < purchase.product.quantity &&
+                                  value !== (purchaseInCart as PurchaseType[])[index].buy_count
+                              )
+                            }
+                            disabled={purchase.disable}
                           />
                         </div>
                         <div className='col-span-1'>

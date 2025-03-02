@@ -88,9 +88,6 @@ const Login = () => {
                 >
                   Đăng nhập
                 </Button>
-                {/* <button type='submit' className='w-full bg-orange-600 text-white text-center py-4'>
-                  Đăng nhập
-                </button> */}
               </div>
               <div className='mt-8 text-center'>
                 <div className='flex items-center justify-center gap-3'>
