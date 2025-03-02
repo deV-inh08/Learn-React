@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import productApi from '../../apis/product.api'
 import ProductRating from '../../components/ProductRating'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from '../../utils/uitls'
@@ -12,12 +12,14 @@ import purchaseApi from '../../apis/purchase.api'
 import { queryClient } from '../../main'
 import { PurchasesStatus } from '../../constants/purchase'
 import { toast } from 'react-toastify'
+import { path } from '../../constants/path'
 
 const ProductDetail = () => {
   const [buyCount, setBuyCount] = useState<number>(1)
   const [currentIndexImages, setCurrentIndexNumber] = useState([0, 5])
   const [activeImageSlider, setActiveImageSlider] = useState('')
   const imgRef = useRef<HTMLImageElement>(null)
+  const navigate = useNavigate()
   const { nameId } = useParams()
   const id = getIdFromNameId(nameId as string)
 
@@ -40,6 +42,27 @@ const ProductDetail = () => {
   const addToCartMutation = useMutation({
     mutationFn: (body: { product_id: string; buy_count: number }) => purchaseApi.addToCart(body)
   })
+
+  const buyNow = async () => {
+    const res = await addToCartMutation.mutateAsync(
+      {
+        buy_count: buyCount,
+        product_id: product?._id as string
+      },
+      {
+        onSuccess: (data) => {
+          toast.success(data.data.message, { autoClose: 1000 })
+          queryClient.invalidateQueries({ queryKey: ['purchases', { status: PurchasesStatus.inCart }] })
+        }
+      }
+    )
+    const purchase = res.data.data
+    navigate(path.cart, {
+      state: {
+        purchaseId: purchase._id
+      }
+    })
+  }
 
   const handleBuyCount = (value: number) => {
     setBuyCount(value)
@@ -228,7 +251,10 @@ const ProductDetail = () => {
                       </svg>
                       <p>Thêm vào giỏ hàng</p>
                     </button>
-                    <button className='ml-4 flex px-5 h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange-600 capitalize text-white shadow-sm'>
+                    <button
+                      onClick={buyNow}
+                      className='ml-4 flex px-5 h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange-600 capitalize text-white shadow-sm'
+                    >
                       Mua ngay
                     </button>
                   </div>

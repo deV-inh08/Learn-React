@@ -1,9 +1,7 @@
-import React from 'react'
-
 const Footer = () => {
   return (
     <footer className='py-16 bg-neutral-100'>
-      <div className='max-w-7xl grid-cols-1 lg:grid-cols-3 gap-4'>
+      <div className='max-w-7xl grid-cols-1 lg:grid-cols-3 gap-4 text-center'>
         <div className='lg:col-span-1'>
           <p>© 2025 Shopee. Tất cả các quyền được bảo lưu.</p>
         </div>
