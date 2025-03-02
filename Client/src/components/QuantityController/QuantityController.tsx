@@ -5,7 +5,7 @@ interface Props extends InputNumberProps {
   onIncrease?: (value: number) => void
   onDecrese?: (value: number) => void
   onType?: (value: number) => void
-  onFocusOut?: (value: number) => void,
+  onFocusOut?: (value: number) => void
   classNameWrapper?: string
 }
 
