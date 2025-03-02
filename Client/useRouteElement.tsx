@@ -11,6 +11,7 @@ import NotFound from './src/pages/NotFound/NotFound'
 import Profile from './src/pages/Profile'
 import ProductDetail from './src/pages/ProductDetail'
 import Cart from './src/pages/Cart'
+import CartLayout from './src/layouts/CartLayout'
 
 const ProtectRoute = (): JSX.Element => {
   const { isAuthenticated } = useContext(AppContext)
@@ -57,9 +58,9 @@ const useRouteElement = () => {
         {
           path: path.cart,
           element: (
-            <MainLayout>
+            <CartLayout>
               <Cart />
-            </MainLayout>
+            </CartLayout>
           )
         }
       ]

@@ -1,43 +1,21 @@
-import { createSearchParams, Link, useNavigate } from 'react-router-dom'
-import authApi from '../../apis/auth.apis'
+import { Link } from 'react-router-dom'
 import Popover from '../Popover'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useContext } from 'react'
 import { AppContext } from '../../contexts/app.context'
 import { path } from '../../constants/path'
-import { useQueryConfig } from '../../hooks/useQueryConfig'
-import { useForm } from 'react-hook-form'
-import { schema, Schema } from '../../utils/rules'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { omit } from 'lodash'
 import { PurchasesStatus } from '../../constants/purchase'
 import purchaseApi from '../../apis/purchase.api'
 import noProduct from '../../assets/no_product.png'
 import { formatCurrency } from '../../utils/uitls'
+import NavHeader from '../NavHeader'
+import useSearchProducts from '../../hooks/useSearchProducts'
 
-type FormData = Pick<Schema, 'name'>
-const nameSchema = schema.pick(['name'])
 const MAX_PURCHASES = 5
 
 const Header = () => {
-  const { isAuthenticated, setIsAuthenticated, setProfile, profile } = useContext(AppContext)
-  const queryConfig = useQueryConfig()
-  const navigate = useNavigate()
-
-  const { register, handleSubmit } = useForm<FormData>({
-    defaultValues: {
-      name: ''
-    },
-    resolver: yupResolver(nameSchema)
-  })
-
-  const logoutMutation = useMutation({
-    mutationFn: authApi.logoutAccount,
-    onSuccess: () => {
-      setIsAuthenticated(false)
-      setProfile(null)
-    }
-  })
+  const { isAuthenticated } = useContext(AppContext)
+  const { onSubmitSearch, register } = useSearchProducts()
 
   const { data: purchaseInCart } = useQuery({
     queryKey: ['purchases', { status: PurchasesStatus.inCart }],
@@ -45,32 +23,11 @@ const Header = () => {
     enabled: isAuthenticated
   })
 
-  const handleLogout = () => {
-    logoutMutation.mutate()
-  }
-
-  const handleSubmitSearch = handleSubmit((data) => {
-    const config = queryConfig.order
-      ? omit(
-          {
-            ...queryConfig,
-            name: data.name
-          },
-          ['order', 'sort_by']
-        )
-      : {
-          ...queryConfig,
-          name: data.name
-        }
-    navigate({
-      pathname: path.home,
-      search: createSearchParams(config).toString()
-    })
-  })
   return (
     <div className='pb-5 pt-2 bg-gradient-to-t from-[#ee4d2d] to-[#ff7337]'>
       <div className='container-custom'>
-        <div className='flex justify-end text-white'>
+        <NavHeader></NavHeader>
+        {/* <div className='flex justify-end text-white'>
           <Popover
             className='flex items-center py-1 hover:text-gray-300 cursor-pointer relative'
             children={
@@ -159,7 +116,7 @@ const Header = () => {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
         <div className='grid grid-cols-12 gap-4 mt-4 items-end'>
           <Link className='col-span-2' to='/'>
             <svg viewBox='0 0 192 65' className='h-11 w-full fill-logo-white'>
@@ -168,7 +125,7 @@ const Header = () => {
               </g>
             </svg>
           </Link>
-          <form className='col-span-9' onSubmit={handleSubmitSearch}>
+          <form className='col-span-9' onSubmit={onSubmitSearch}>
             <div className='bg-white rounded-sm p-1 flex'>
               <input
                 type='text'

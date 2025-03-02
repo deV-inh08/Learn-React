@@ -187,7 +187,7 @@ const Cart = () => {
                               >
                                 <img src={purchase.product.image} alt={purchase.product.name} />
                               </Link>
-                              <div className='flex-grow px-2 pt-1 pb-2'>
+                              <div className='flex-grow px-2 pt-1 pb-2 text-left'>
                                 <Link
                                   to={`${path.home}${generateNameId({ name: purchase.product.name, id: purchase.product._id })}`}
                                   className='line-clamp-2'
