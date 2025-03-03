@@ -6,7 +6,7 @@ type Name = keyof FormData
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string
-  name: Name | 'from' | 'to'
+  name?: Name | 'from' | 'to'
   classNameInput?: string
   classNameError?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,7 +26,7 @@ const Input = ({
 }: Props) => {
   const registerResult = register && name ? register(name, rules) : null
   return (
-    <div className={`${className ? className : 'h-[4rem] my-6'}`}>
+    <div className={`${className ? className + 'h-[4rem] my-6' : ''}`}>
       <input
         // name='email' => overWrite
         className={classNameInput}

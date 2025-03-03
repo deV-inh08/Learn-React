@@ -40,10 +40,10 @@ const UserSideNav = () => {
           <p className='text-gray-600'>Đổi mật khẩu</p>
         </Link>
         <Link to={path.histotyPurchase} className='flex items-center mt-6 capitalize text-orange-600 transition-colors'>
-        <div className='mr-3 h-[22px] w-[22px]'>
-          <img src='https://down-vn.img.susercontent.com/file/f0049e9df4e536bc3e7f140d071e9078' />
-        </div>
-        <p className='text-gray-600'>Đơn mua</p>
+          <div className='mr-3 h-[22px] w-[22px]'>
+            <img src='https://down-vn.img.susercontent.com/file/f0049e9df4e536bc3e7f140d071e9078' />
+          </div>
+          <p className='text-gray-600'>Đơn mua</p>
         </Link>
       </div>
     </div>
