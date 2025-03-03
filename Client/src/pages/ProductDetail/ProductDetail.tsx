@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useNavigate, useParams } from 'react-router-dom'
 import productApi from '../../apis/product.api'
@@ -9,7 +9,6 @@ import { Product as ProductType, ProductListConfig } from '../../types/product.t
 import Product from '../ProductList/components/Product'
 import QuantityController from '../../components/QuantityController'
 import purchaseApi from '../../apis/purchase.api'
-import { queryClient } from '../../main'
 import { PurchasesStatus } from '../../constants/purchase'
 import { toast } from 'react-toastify'
 import { path } from '../../constants/path'
@@ -19,6 +18,8 @@ const ProductDetail = () => {
   const [currentIndexImages, setCurrentIndexNumber] = useState([0, 5])
   const [activeImageSlider, setActiveImageSlider] = useState('')
   const imgRef = useRef<HTMLImageElement>(null)
+  // get queryClient by useQueryClient
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { nameId } = useParams()
   const id = getIdFromNameId(nameId as string)

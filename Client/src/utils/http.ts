@@ -48,7 +48,10 @@ class Http {
             autoClose: 2000
           })
         }
-        return error
+
+        if (error.response?.status === HttpStatusCode.UnprocessableEntity) {
+          clearLS()
+        }
       }
     )
     // Add request interceptor

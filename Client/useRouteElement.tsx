@@ -12,6 +12,8 @@ import Profile from './src/pages/Profile'
 import ProductDetail from './src/pages/ProductDetail'
 import Cart from './src/pages/Cart'
 import CartLayout from './src/layouts/CartLayout'
+import UserLayout from './src/pages/User/layouts/UserLayout'
+import ChangePassword from './src/pages/User/pages/ChangePassword'
 
 const ProtectRoute = (): JSX.Element => {
   const { isAuthenticated } = useContext(AppContext)
@@ -48,20 +50,30 @@ const useRouteElement = () => {
       element: <ProtectRoute />,
       children: [
         {
-          path: path.profile,
-          element: (
-            <MainLayout>
-              <Profile />
-            </MainLayout>
-          )
-        },
-        {
           path: path.cart,
           element: (
             <CartLayout>
               <Cart />
             </CartLayout>
           )
+        },
+        {
+          path: path.user,
+          element: (
+            <MainLayout>
+              <UserLayout></UserLayout>
+            </MainLayout>
+          ),
+          children: [
+            {
+              path: path.profile,
+              element: <Profile />
+            },
+            {
+              path: path.changePassword,
+              element: <ChangePassword />
+            }
+          ]
         }
       ]
     },

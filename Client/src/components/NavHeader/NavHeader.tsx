@@ -2,15 +2,14 @@ import Popover from '../Popover'
 import { Link } from 'react-router-dom'
 import { AppContext } from '../../contexts/app.context'
 import { path } from '../../constants/path'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import authApi from '../../apis/auth.apis'
-import { queryClient } from '../../main'
 import { PurchasesStatus } from '../../constants/purchase'
 import { useContext } from 'react'
 
 const NavHeader = () => {
   const { isAuthenticated, profile, setIsAuthenticated, setProfile } = useContext(AppContext)
-
+  const queryClient = useQueryClient()
   const logoutMutation = useMutation({
     mutationFn: authApi.logoutAccount,
     onSuccess: () => {
@@ -71,7 +70,7 @@ const NavHeader = () => {
             className='flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6'
             renderPopover={
               <div>
-                <Link to='/profile' className='block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
+                <Link to={path.profile} className='block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
                   Tài khoản của tôi
                 </Link>
                 <Link to='/' className='block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
