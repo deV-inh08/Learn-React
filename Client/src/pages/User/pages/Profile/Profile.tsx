@@ -1,55 +1,141 @@
-import React from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import Button from '../../../../components/Button'
 import Input from '../../../../components/Input'
+import userApi from '../../../../apis/user.api'
+import { userSchema, UserSchema } from '../../../../utils/rules'
+import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import InputNumber from '../../../../components/InputNumber'
+import { useContext, useEffect } from 'react'
+import DateSelect from '../../components/DateSelect'
+import { toast } from 'react-toastify'
+import { AppContext } from '../../../../contexts/app.context'
+import { setProfileToLS } from '../../../../utils/authLS'
+
+type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
+
+const profileSchema = userSchema.pick(['name', 'address', 'phone', 'date_of_birth', 'avatar'])
 
 const Profile = () => {
-  return (
+  const { setProfile } = useContext(AppContext)
+  const { data: profileData, refetch } = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => userApi.getProfile()
+  })
+  const profile = profileData?.data.data
+  const updatedProfileMutation = useMutation({
+    mutationFn: userApi.updateProfile
+  })
 
- <div className='rounded-sm bg-white px-2 pb-10 md:pb-20 md:px-7 shadow'>
+  const {
+    register,
+    control,
+    formState: { errors },
+    handleSubmit,
+    setValue
+  } = useForm<FormData>({
+    defaultValues: {
+      name: '',
+      address: '',
+      avatar: '',
+      date_of_birth: new Date(1990, 0, 1),
+      phone: ''
+    },
+    resolver: yupResolver(profileSchema)
+  })
+
+  useEffect(() => {
+    if (profile) {
+      setValue('name', profile.name)
+      setValue('address', profile.address)
+      setValue('avatar', profile.avatar)
+      setValue('date_of_birth', profile.date_of_birth ? new Date(profile.date_of_birth) : new Date(1990, 0, 1))
+    }
+  }, [profile, setValue])
+
+  const handleUpdatedProfile = handleSubmit(async (data) => {
+    const res = await updatedProfileMutation.mutateAsync({ ...data, date_of_birth: data.date_of_birth?.toISOString() })
+    setProfile(res.data.data)
+    setProfileToLS(res.data.data)
+    refetch()
+    toast.success(res.data.message, { autoClose: 1000 })
+  })
+
+  return (
+    <div className='rounded-sm bg-white px-2 pb-10 md:pb-20 md:px-7 shadow'>
       <div className='border-b border-b-gray-200 py-6'>
         <h1 className='text-lg font-medium capitalize text-gray-70'>Hồ sơ cuả tôi</h1>
         <p className='mt-1 text-sm text-gray-700'>Quản lý thông tin hồ sơ của tôi</p>
       </div>
       <div className='mt-8 flex flex-col-reverse md:flex-row md:items-start'>
-        <form action='' className='mt-6 flex-grow pr-12 md:mt-0'>
+        <form action='' className='mt-6 flex-grow pr-12 md:mt-0' onSubmit={handleUpdatedProfile}>
           <div className='flex flex-wrap'>
             <p className='w-[20%] truncate pt-3 text-right capitalize'>Email</p>
             <div className='w-[80%] pl-4'>
-              <p className='pt-3 text-gray-700'>vi*******@gmail.com</p>
+              <p className='pt-3 text-gray-700'>{profile?.email}</p>
             </div>
           </div>
           <div className='flex flex-wrap mt-6'>
             <p className='w-[20%] truncate pt-3 text-right capitalize'>Tên</p>
             <div className='w-[80%] pl-4'>
-              <Input classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'></Input>
+              <Input
+                register={register}
+                name='name'
+                placeholder='Tên'
+                errorMessage={errors.name?.message}
+                classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
+              ></Input>
             </div>
           </div>
           <div className='flex flex-wrap mt-6'>
             <p className='w-[20%] truncate pt-3 text-right capitalize'>Số điện thoại</p>
             <div className='w-[80%] pl-4'>
-              <Input classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'></Input>
+              <Controller
+                control={control}
+                name='phone'
+                render={({ field }) => (
+                  <InputNumber
+                    classNameInput='w-full rounded-sm border border-gray-700 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
+                    placeholder='Số điện thoại'
+                    errorMessage={errors.phone?.message}
+                    {...field}
+                    onChange={field.onChange}
+                  ></InputNumber>
+                )}
+              ></Controller>
             </div>
           </div>
           <div className='flex flex-wrap mt-6'>
             <p className='w-[20%] truncate pt-3 text-right capitalize'>Địa chỉ</p>
             <div className='w-[80%] pl-4'>
-              <Input classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'></Input>
+              <Input
+                register={register}
+                name='address'
+                placeholder='Địa chỉ'
+                errorMessage={errors.address?.message}
+                classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
+              ></Input>
             </div>
           </div>
-          <div className='mt-6 flex flex-wrap'>
-            <p className='w-[20%] truncate pt-3 text-right capitalize'>Ngày sinh</p>
-            <div className='w-[80%] pl-4'>
-              <div className='flex justify-between'>
-                <select className='h-10 w-[32%] rounded-sm border border-black/10 px-3 '>
-                  <option disabled>Ngày</option>
-                </select>
-                <select className='h-10 w-[32%] rounded-sm border border-black/10 px-3 '>
-                  <option disabled>Tháng</option>
-                </select>
-                <select className='h-10 w-[32%] rounded-sm border border-black/10 px-3 '>
-                  <option disabled>Năm</option>
-                </select>
-              </div>
-            </div>
+          <Controller
+            control={control}
+            name='date_of_birth'
+            render={({ field }) => {
+              console.log(field)
+              return (
+                <DateSelect
+                  errorMessage={errors.date_of_birth?.message}
+                  value={field.value}
+                  onChange={field.onChange}
+                ></DateSelect>
+              )
+            }}
+          ></Controller>
+          <div className='flex flex-wrap mt-6'>
+            <p className='w-[20%] truncate pt-3 text-right capitalize'></p>
+            <Button className='flex items-center h-9 bg-orange-600 px-5 text-center text-white hover:bg-orange-600/80'>
+              Lưu
+            </Button>
           </div>
         </form>
         <div className='flex justify-center md:w-72 md:border-l-gray-200'>
@@ -62,7 +148,10 @@ const Profile = () => {
               />
             </div>
             <input className='hidden' type='file' accept='.jpg,.jpeg,.png' />
-            <button className='flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-sm text-gray-600 shadow-sm'>
+            <button
+              type='button'
+              className='flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-sm text-gray-600 shadow-sm'
+            >
               Chọn ảnh
             </button>
             <div className='mt-3 text-gray-400'>

@@ -1,12 +1,14 @@
 import { UseFormRegister, RegisterOptions } from 'react-hook-form'
 import { FormData } from '../../pages/Register/Register'
 import { InputHTMLAttributes } from 'react'
+import { UserSchema } from '../../utils/rules'
 
+type Profile = keyof UserSchema
 type Name = keyof FormData
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string
-  name?: Name | 'from' | 'to'
+  name?: Name | 'from' | 'to' | Profile
   classNameInput?: string
   classNameError?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
