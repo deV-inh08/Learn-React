@@ -13,6 +13,7 @@ import { AppContext } from '../../../../contexts/app.context'
 import { setProfileToLS } from '../../../../utils/authLS'
 import { getAvatarName, isAxiosUnprocessableEntityError } from '../../../../utils/uitls'
 import { ErrorResponse } from '../../../../types/util.type'
+import { config } from '../../../../constants/config'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
 type FormDataError = Omit<FormData, 'date_of_birth'> & {
@@ -110,7 +111,17 @@ const Profile = () => {
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileFromLocal = e.target.files?.[0]
-    setFile(fileFromLocal)
+    if (fileFromLocal && (fileFromLocal.size >= config.maxSizeUploadAvatar || !fileFromLocal.type.includes('image'))) {
+      toast.error('Ảnh không đúng định dạng hoặc kích thước ảnh quá lớn', {
+        autoClose: 1000,
+        position: 'top-center'
+      })
+    } else {
+      setFile(fileFromLocal)
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
   }
 
   return (
@@ -198,7 +209,8 @@ const Profile = () => {
                 className='h-full w-full object-cover rounded-full'
               />
             </div>
-            <input className='hidden' type='file' accept='.jpg,.jpeg,.png' ref={fileInputRef} onChange={onFileChange} />
+            <input
+            className='hidden' type='file' accept='.jpg,.jpeg,.png' ref={fileInputRef} onChange={onFileChange} />
             <button
               type='button'
               className='flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-sm text-gray-600 shadow-sm'

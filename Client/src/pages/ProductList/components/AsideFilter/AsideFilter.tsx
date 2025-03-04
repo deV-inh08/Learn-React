@@ -27,7 +27,6 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
   const {
     control,
     handleSubmit,
-    watch,
     trigger,
     formState: { errors }
   } = useForm<FormDataPrice>({
@@ -39,8 +38,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
     shouldFocusError: false
   })
   const navigate = useNavigate()
-  const valueForm = watch()
-  console.log(valueForm)
+  // const valueForm = watch()
   const handleSubmitPrice = handleSubmit((data) => {
     navigate({
       pathname: path.home,
