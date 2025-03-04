@@ -8,12 +8,12 @@ import Register from './src/pages/Register'
 import RegisterLayout from './src/layouts/RegisterLayout'
 import MainLayout from './src/layouts/MainLayout'
 import NotFound from './src/pages/NotFound/NotFound'
-import Profile from './src/pages/Profile'
 import ProductDetail from './src/pages/ProductDetail'
 import Cart from './src/pages/Cart'
 import CartLayout from './src/layouts/CartLayout'
 import UserLayout from './src/pages/User/layouts/UserLayout'
 import ChangePassword from './src/pages/User/pages/ChangePassword'
+import Profile from './src/pages/User/pages/Profile'
 
 const ProtectRoute = (): JSX.Element => {
   const { isAuthenticated } = useContext(AppContext)
