@@ -1,5 +1,7 @@
 import { AxiosError, isAxiosError } from 'axios'
 import HttpStatusCode from '../constants/httpStatusCode.enum'
+import { config } from '../constants/config'
+import { avatar_default } from '../constants/avatar'
 
 // Type Predicate Function
 
@@ -43,3 +45,8 @@ export const getIdFromNameId = (nameId: string) => {
   const arr = nameId.split('-i-')
   return arr[arr.length - 1]
 }
+
+export const getAvatarName = (avatarName?: string) =>
+(
+  avatarName ? `${config.baseURL}/images/${avatarName}` : avatar_default
+)
