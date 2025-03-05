@@ -47,6 +47,4 @@ export const getIdFromNameId = (nameId: string) => {
 }
 
 export const getAvatarName = (avatarName?: string) =>
-(
   avatarName ? `${config.baseURL}/images/${avatarName}` : avatar_default
-)

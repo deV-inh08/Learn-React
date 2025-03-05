@@ -1,8 +1,10 @@
 import { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { path } from '../../../../constants/path'
 import { AppContext } from '../../../../contexts/app.context'
 import { getAvatarName } from '../../../../utils/uitls'
+import classNames from 'classnames'
+
 const UserSideNav = () => {
   const { profile } = useContext(AppContext)
   return (
@@ -26,24 +28,37 @@ const UserSideNav = () => {
         </div>
       </div>
       <div className='mt-7'>
-        <Link to={path.profile} className='flex items-center capitalize text-orange-600 transition-colors'>
+        <NavLink 
+          to={path.profile}
+          className={({ isActive }) => {
+          return classNames('flex items-center mt-4 capitalize transition-colors', {
+            'text-orange-600': isActive,
+            'text-gray-600': !isActive
+          })
+        }}>
           <div className='mr-3 h-[22px] w-[22px]'>
             <img alt='icon' src='https://down-vn.img.susercontent.com/file/ba61750a46794d8847c3f463c5e71cc4' />
           </div>
-          <p className='text-gray-600'>Tài khoản của tôi</p>
-        </Link>
-        <Link to={path.profile} className='flex items-center mt-6 capitalize text-orange-600 transition-colors'>
+          <p className='text-inherit'>Tài khoản của tôi</p>
+        </NavLink>
+        <NavLink to={path.changePassword} className={({ isActive }) => classNames('flex items-center mt-4 capitalize transition-colors', {
+          'text-orange-600': isActive,
+          'text-gray-600': !isActive
+        })}>
           <div className='mr-3 h-[22px] w-[22px]'>
             <img alt='icon' src='https://down-vn.img.susercontent.com/file/ba61750a46794d8847c3f463c5e71cc4' />
           </div>
-          <p className='text-gray-600'>Đổi mật khẩu</p>
-        </Link>
-        <Link to={path.histotyPurchase} className='flex items-center mt-6 capitalize text-orange-600 transition-colors'>
+          <p className='text-inherit'>Đổi mật khẩu</p>
+        </NavLink>
+        <NavLink to={path.histotyPurchase} className={({ isActive }) => classNames('flex items-center mt-4 capitalize transition-colors', {
+          'text-orange-600': isActive,
+          'text-gray-600': !isActive
+        })}>
           <div className='mr-3 h-[22px] w-[22px]'>
             <img src='https://down-vn.img.susercontent.com/file/f0049e9df4e536bc3e7f140d071e9078' />
           </div>
-          <p className='text-gray-600'>Đơn mua</p>
-        </Link>
+          <p className='text-inherit'>Đơn mua</p>
+        </NavLink>
       </div>
     </div>
   )

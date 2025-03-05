@@ -6,14 +6,14 @@ import { userSchema, UserSchema } from '../../../../utils/rules'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import InputNumber from '../../../../components/InputNumber'
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import DateSelect from '../../components/DateSelect'
 import { toast } from 'react-toastify'
 import { AppContext } from '../../../../contexts/app.context'
 import { setProfileToLS } from '../../../../utils/authLS'
 import { getAvatarName, isAxiosUnprocessableEntityError } from '../../../../utils/uitls'
 import { ErrorResponse } from '../../../../types/util.type'
-import { config } from '../../../../constants/config'
+import InputFile from '../../../../components/InputFile'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
 type FormDataError = Omit<FormData, 'date_of_birth'> & {
@@ -27,7 +27,6 @@ const Profile = () => {
   const previewImage = useMemo(() => {
     return file ? URL.createObjectURL(file) : ''
   }, [file])
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const { data: profileData, refetch } = useQuery({
     queryKey: ['profile'],
     queryFn: () => userApi.getProfile()
@@ -105,23 +104,9 @@ const Profile = () => {
     }
   })
 
-  const handleUpload = () => {
-    fileInputRef.current?.click()
-  }
-
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileFromLocal = e.target.files?.[0]
-    if (fileFromLocal && (fileFromLocal.size >= config.maxSizeUploadAvatar || !fileFromLocal.type.includes('image'))) {
-      toast.error('Ảnh không đúng định dạng hoặc kích thước ảnh quá lớn', {
-        autoClose: 1000,
-        position: 'top-center'
-      })
-    } else {
-      setFile(fileFromLocal)
-    }
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
-    }
+  // change file 'image' avatar
+  const handleChangeFile = (file?: File) => {
+    setFile(file)
   }
 
   return (
@@ -204,20 +189,12 @@ const Profile = () => {
           <div className='flex flex-col items-center'>
             <div className='my-5 h-24 w-24'>
               <img
-                src={previewImage || getAvatarName(avatar)} 
-                alt='avatar' 
+                src={previewImage || getAvatarName(avatar)}
+                alt='avatar'
                 className='h-full w-full object-cover rounded-full'
               />
             </div>
-            <input
-            className='hidden' type='file' accept='.jpg,.jpeg,.png' ref={fileInputRef} onChange={onFileChange} />
-            <button
-              type='button'
-              className='flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-sm text-gray-600 shadow-sm'
-              onClick={handleUpload}
-            >
-              Chọn ảnh
-            </button>
+            <InputFile onChange={handleChangeFile} />
             <div className='mt-3 text-gray-400'>
               <p>Dung lượng tối đa 1 MB</p>
               <p>Định dạng .JPEG, .PNG </p>
