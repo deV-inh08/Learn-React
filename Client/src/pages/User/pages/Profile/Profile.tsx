@@ -1,11 +1,10 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { FormProvider } from 'react-hook-form'
 import Button from '../../../../components/Button'
-import Input from '../../../../components/Input'
 import userApi from '../../../../apis/user.api'
 import { userSchema, UserSchema } from '../../../../utils/rules'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import InputNumber from '../../../../components/InputNumber'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import DateSelect from '../../components/DateSelect'
 import { toast } from 'react-toastify'
@@ -14,6 +13,7 @@ import { setProfileToLS } from '../../../../utils/authLS'
 import { getAvatarName, isAxiosUnprocessableEntityError } from '../../../../utils/uitls'
 import { ErrorResponse } from '../../../../types/util.type'
 import InputFile from '../../../../components/InputFile'
+import InputInfor from '../../../../components/InputInfor'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
 type FormDataError = Omit<FormData, 'date_of_birth'> & {
@@ -21,6 +21,7 @@ type FormDataError = Omit<FormData, 'date_of_birth'> & {
 }
 
 const profileSchema = userSchema.pick(['name', 'address', 'phone', 'date_of_birth', 'avatar'])
+
 const Profile = () => {
   const { setProfile } = useContext(AppContext)
   const [file, setFile] = useState<File>()
@@ -40,15 +41,7 @@ const Profile = () => {
     mutationFn: userApi.uploadAvatar
   })
 
-  const {
-    register,
-    control,
-    formState: { errors },
-    handleSubmit,
-    watch,
-    setValue,
-    setError
-  } = useForm<FormData>({
+  const methods = useForm<FormData>({
     defaultValues: {
       name: '',
       address: '',
@@ -58,6 +51,15 @@ const Profile = () => {
     },
     resolver: yupResolver(profileSchema)
   })
+
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    watch,
+    setValue,
+    setError
+  } = methods
 
   const avatar = watch('avatar')
 
@@ -116,75 +118,37 @@ const Profile = () => {
         <p className='mt-1 text-sm text-gray-700'>Quản lý thông tin hồ sơ của tôi</p>
       </div>
       <div className='mt-8 flex flex-col-reverse md:flex-row md:items-start'>
-        <form action='' className='mt-6 flex-grow pr-12 md:mt-0' onSubmit={handleUpdatedProfile}>
-          <div className='flex flex-wrap'>
-            <p className='w-[20%] truncate pt-3 text-right capitalize'>Email</p>
-            <div className='w-[80%] pl-4'>
-              <p className='pt-3 text-gray-700'>{profile?.email}</p>
+        <FormProvider {...methods}>
+          <form action='' className='mt-6 flex-grow pr-12 md:mt-0' onSubmit={handleUpdatedProfile}>
+            <div className='flex flex-wrap'>
+              <p className='w-[20%] truncate pt-3 text-right capitalize'>Email</p>
+              <div className='w-[80%] pl-4'>
+                <p className='pt-3 text-gray-700'>{profile?.email}</p>
+              </div>
             </div>
-          </div>
-          <div className='flex flex-wrap mt-6'>
-            <p className='w-[20%] truncate pt-3 text-right capitalize'>Tên</p>
-            <div className='w-[80%] pl-4'>
-              <Input
-                register={register}
-                name='name'
-                placeholder='Tên'
-                errorMessage={errors.name?.message}
-                classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
-              ></Input>
-            </div>
-          </div>
-          <div className='flex flex-wrap mt-6'>
-            <p className='w-[20%] truncate pt-3 text-right capitalize'>Số điện thoại</p>
-            <div className='w-[80%] pl-4'>
-              <Controller
-                control={control}
-                name='phone'
-                render={({ field }) => (
-                  <InputNumber
-                    classNameInput='w-full rounded-sm border border-gray-700 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
-                    placeholder='Số điện thoại'
-                    errorMessage={errors.phone?.message}
-                    {...field}
+            <InputInfor />
+            <Controller
+              control={control}
+              name='date_of_birth'
+              render={({ field }) => {
+                return (
+                  <DateSelect
+                    errorMessage={errors.date_of_birth?.message}
+                    value={field.value}
                     onChange={field.onChange}
-                  ></InputNumber>
-                )}
-              ></Controller>
+                  ></DateSelect>
+                )
+              }}
+            ></Controller>
+            <div className='flex flex-wrap mt-6'>
+              <p className='w-[20%] truncate pt-3 text-right capitalize'></p>
+              <Button className='flex items-center h-9 bg-orange-600 px-5 text-center text-white hover:bg-orange-600/80'>
+                Lưu
+              </Button>
             </div>
-          </div>
-          <div className='flex flex-wrap mt-6'>
-            <p className='w-[20%] truncate pt-3 text-right capitalize'>Địa chỉ</p>
-            <div className='w-[80%] pl-4'>
-              <Input
-                register={register}
-                name='address'
-                placeholder='Địa chỉ'
-                errorMessage={errors.address?.message}
-                classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
-              ></Input>
-            </div>
-          </div>
-          <Controller
-            control={control}
-            name='date_of_birth'
-            render={({ field }) => {
-              return (
-                <DateSelect
-                  errorMessage={errors.date_of_birth?.message}
-                  value={field.value}
-                  onChange={field.onChange}
-                ></DateSelect>
-              )
-            }}
-          ></Controller>
-          <div className='flex flex-wrap mt-6'>
-            <p className='w-[20%] truncate pt-3 text-right capitalize'></p>
-            <Button className='flex items-center h-9 bg-orange-600 px-5 text-center text-white hover:bg-orange-600/80'>
-              Lưu
-            </Button>
-          </div>
-        </form>
+          </form>
+        </FormProvider>
+
         <div className='flex justify-center md:w-72 md:border-l-gray-200'>
           <div className='flex flex-col items-center'>
             <div className='my-5 h-24 w-24'>

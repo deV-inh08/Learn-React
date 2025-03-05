@@ -28,32 +28,43 @@ const UserSideNav = () => {
         </div>
       </div>
       <div className='mt-7'>
-        <NavLink 
+        <NavLink
           to={path.profile}
           className={({ isActive }) => {
-          return classNames('flex items-center mt-4 capitalize transition-colors', {
-            'text-orange-600': isActive,
-            'text-gray-600': !isActive
-          })
-        }}>
+            return classNames('flex items-center mt-4 capitalize transition-colors', {
+              'text-orange-600': isActive,
+              'text-gray-600': !isActive
+            })
+          }}
+        >
           <div className='mr-3 h-[22px] w-[22px]'>
             <img alt='icon' src='https://down-vn.img.susercontent.com/file/ba61750a46794d8847c3f463c5e71cc4' />
           </div>
           <p className='text-inherit'>Tài khoản của tôi</p>
         </NavLink>
-        <NavLink to={path.changePassword} className={({ isActive }) => classNames('flex items-center mt-4 capitalize transition-colors', {
-          'text-orange-600': isActive,
-          'text-gray-600': !isActive
-        })}>
+        <NavLink
+          to={path.changePassword}
+          className={({ isActive }) =>
+            classNames('flex items-center mt-4 capitalize transition-colors', {
+              'text-orange-600': isActive,
+              'text-gray-600': !isActive
+            })
+          }
+        >
           <div className='mr-3 h-[22px] w-[22px]'>
             <img alt='icon' src='https://down-vn.img.susercontent.com/file/ba61750a46794d8847c3f463c5e71cc4' />
           </div>
           <p className='text-inherit'>Đổi mật khẩu</p>
         </NavLink>
-        <NavLink to={path.histotyPurchase} className={({ isActive }) => classNames('flex items-center mt-4 capitalize transition-colors', {
-          'text-orange-600': isActive,
-          'text-gray-600': !isActive
-        })}>
+        <NavLink
+          to={path.histotyPurchase}
+          className={({ isActive }) =>
+            classNames('flex items-center mt-4 capitalize transition-colors', {
+              'text-orange-600': isActive,
+              'text-gray-600': !isActive
+            })
+          }
+        >
           <div className='mr-3 h-[22px] w-[22px]'>
             <img src='https://down-vn.img.susercontent.com/file/f0049e9df4e536bc3e7f140d071e9078' />
           </div>
