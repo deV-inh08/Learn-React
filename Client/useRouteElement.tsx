@@ -14,6 +14,7 @@ import CartLayout from './src/layouts/CartLayout'
 import UserLayout from './src/pages/User/layouts/UserLayout'
 import ChangePassword from './src/pages/User/pages/ChangePassword'
 import Profile from './src/pages/User/pages/Profile'
+import HistoryPurchase from './src/pages/User/pages/HistoryPurchase'
 
 const ProtectRoute = (): JSX.Element => {
   const { isAuthenticated } = useContext(AppContext)
@@ -72,6 +73,10 @@ const useRouteElement = () => {
             {
               path: path.changePassword,
               element: <ChangePassword />
+            },
+            {
+              path: path.histotyPurchase,
+              element: <HistoryPurchase />
             }
           ]
         }
