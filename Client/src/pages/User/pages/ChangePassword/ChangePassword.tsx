@@ -19,7 +19,8 @@ const ChangePassword = () => {
     register,
     formState: { errors },
     handleSubmit,
-    setError
+    setError,
+    reset
   } = useForm<FormData>({
     defaultValues: {
       password: '',
@@ -39,6 +40,7 @@ const ChangePassword = () => {
       toast.success(res.data.message, {
         autoClose: 1000
       })
+      reset()
     } catch (error) {
       if (isAxiosUnprocessableEntityError<ErrorResponse<FormData>>(error)) {
         const formError = error.response?.data.data
@@ -66,53 +68,51 @@ const ChangePassword = () => {
             <div className='sm:w-[80%] sm:pl-5'>
               <Input
                 classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
-                className='relative '
                 register={register}
                 name='password'
                 type='password'
+                className='relative'
+                classNameEye='absolute top-3 right-2 size-5 cursor-pointer'
                 placeholder='Mật khẩu cũ'
                 errorMessage={errors.password?.message}
               />
             </div>
           </div>
-          <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
+          <div className='mt-6 flex flex-col flex-wrap sm:flex-row'>
             <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Mật khẩu mới</div>
             <div className='sm:w-[80%] sm:pl-5'>
               <Input
                 classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
-                className='relative '
                 register={register}
+                className='relative'
                 name='new_password'
                 type='password'
+                classNameEye='absolute top-3 right-2 size-5 cursor-pointer'
                 placeholder='Mật khẩu mới'
                 errorMessage={errors.new_password?.message}
               />
             </div>
           </div>
-          <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
+          <div className='mt-6 flex flex-col flex-wrap sm:flex-row'>
             <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Nhập lại mật khẩu</div>
             <div className='sm:w-[80%] sm:pl-5'>
               <Input
                 classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
-                className='relative '
                 register={register}
                 name='confirm_password'
                 type='password'
+                className='relaive'
+                classNameEye='absolute top-3 right-2 size-5 cursor-pointer'
                 placeholder='Nhập lại mật khẩu'
                 errorMessage={errors.confirm_password?.message}
               />
             </div>
           </div>
-          <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
-            <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right' />
-            <div className='sm:w-[80%] sm:pl-5'>
-              <Button
-                className='flex h-9 items-center rounded-sm bg-orange px-5 text-center text-sm text-white hover:bg-orange/80'
-                type='submit'
-              >
-                Lưu
-              </Button>
-            </div>
+          <div className='flex flex-wrap mt-6'>
+            <p className='w-[20%] truncate pt-3 text-right capitalize'></p>
+            <Button className='flex items-center h-9 bg-orange-600 px-5 text-center text-white hover:bg-orange-600/80'>
+              Lưu
+            </Button>
           </div>
         </div>
       </form>

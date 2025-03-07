@@ -113,22 +113,28 @@ const Register = () => {
               <Input
                 name='email'
                 type='email'
+                className='mt-5'
                 errorMessage={errors.email?.message}
                 placeholder='Enter your email'
                 rules={rules.email}
+                classNameEye='hidden'
                 register={register}
               ></Input>
               <Input
                 name='password'
                 type='password'
+                className='mt-5'
                 errorMessage={errors.password?.message}
                 placeholder='Enter your passsword'
                 rules={rules.password}
                 register={register}
+                classNameEye='absolute top-3 right-2 size-5 cursor-pointer'
               ></Input>
               <Input
                 name='confirm_password'
                 type='password'
+                className='mt-5'
+                classNameEye='absolute top-3 right-2 size-5 cursor-pointer'
                 errorMessage={errors.confirm_password?.message}
                 placeholder='Enter your confirm passsword'
                 rules={rules.confirm_password} // If have Schema => Don't need rules

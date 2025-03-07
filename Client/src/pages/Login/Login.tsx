@@ -67,6 +67,7 @@ const Login = () => {
                 errorMessage={errors.email?.message}
                 register={register}
                 className='mt-5'
+                classNameEye='hidden'
                 rules={rules.email}
               ></Input>
               <Input
@@ -76,6 +77,7 @@ const Login = () => {
                 errorMessage={errors.password?.message}
                 placeholder='Enter your password'
                 className='mt-5'
+                classNameEye='absolute top-3 right-2 size-5 cursor-pointer'
                 autoComplete='on'
                 rules={rules.password}
               ></Input>
