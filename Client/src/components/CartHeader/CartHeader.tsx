@@ -1,4 +1,3 @@
-import React from 'react'
 import NavHeader from '../NavHeader'
 import { Link, useMatch } from 'react-router-dom'
 import { path } from '../../constants/path'

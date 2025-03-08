@@ -1,4 +1,3 @@
-import React from 'react'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import { QueryConfig } from '../../ProductList'
 import { path } from '../../../../constants/path'
