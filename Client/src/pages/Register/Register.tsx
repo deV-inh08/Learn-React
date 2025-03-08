@@ -2,7 +2,10 @@ import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link, useNavigate } from 'react-router-dom'
-import { omit } from 'lodash'
+// import { omit } from 'lodash' //Don't feature tree-shaking => fix ()
+
+// import trực tiếp
+import omit from 'lodash/omit'
 import authApi from '../../apis/auth.apis.ts'
 import { getRules, emailPasswordSchema, SchemaTypeEmail as SchemaType } from '../../utils/rules'
 import Input from '../../components/Input'

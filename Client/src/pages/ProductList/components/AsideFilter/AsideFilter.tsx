@@ -10,7 +10,7 @@ import InputNumber from '../../../../components/InputNumber'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { NoUndefinedField } from '../../../../types/util.type'
 import RatingStart from '../RatingStar'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import InputV2 from '../../../../components/InputV2'
 
 interface Props {

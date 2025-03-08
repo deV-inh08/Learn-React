@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import authApi from '../../apis/auth.apis'
 import { FormData } from '../Register/Register'
 import Input from '../../components/Input'
