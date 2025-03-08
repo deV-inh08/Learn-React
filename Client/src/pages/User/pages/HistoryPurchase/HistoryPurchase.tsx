@@ -24,7 +24,9 @@ const HistoryPurchase = () => {
     queryKey: ['purchases', { status }],
     queryFn: () => purchaseApi.getPurchases({ status: status as PurchaseListStatus })
   })
+
   const purchases = PurchaseList?.data.data
+
   return (
     <div className='overflow-x-auto '>
       <div className='min-w-[700px]'>
