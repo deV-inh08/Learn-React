@@ -103,16 +103,6 @@ const Register = () => {
           <div className='lg:col-span-2 lg:col-start-4'>
             <form action='' className='p-10 rounded bg-white shadow-sm my-10' onSubmit={onSubmit} noValidate>
               <p className='text-2xl'>Đăng kí</p>
-              {/* <div className='my-3 h-[4rem]'>
-                <input
-                  type='email'
-                  // name='email' => overWrite
-                  placeholder='Enter your email'
-                  className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                  {...register('email', rules.email)}
-                />
-                <p className='mt-1 text-red-600 max-h-[15px] text-sm'>{errors.email?.message}</p>
-              </div> */}
               <Input
                 name='email'
                 type='email'

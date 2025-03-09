@@ -2,6 +2,8 @@ import { AxiosError, isAxiosError } from 'axios'
 import HttpStatusCode from '../constants/httpStatusCode.enum'
 import { config } from '../constants/config'
 import { avatar_default } from '../constants/avatar'
+// import { ErrorResponse } from 'react-router-dom'
+import { ErrorResponse } from '../types/util.type'
 
 // Type Predicate Function
 
@@ -12,6 +14,19 @@ export function isAxiosErrorFunc(error: unknown): error is AxiosError {
 // Check Error UnprocessableEntityError
 export function isAxiosUnprocessableEntityError<FormError>(error: unknown): error is AxiosError<FormError> {
   return isAxiosErrorFunc(error) && error.response?.status === HttpStatusCode.UnprocessableEntity
+}
+
+// check Error UnanthorizedError
+export function isAxiosUnauthorizedError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
+  return isAxiosError(error) && error.response?.status === HttpStatusCode.Unauthorized
+}
+
+// check Error ExpiredToken
+export function isAxiosExpiredTokenError<ExpiredTokenError>(error: unknown): error is ExpiredTokenError {
+  return (
+    isAxiosUnauthorizedError<ErrorResponse<{ name: string; message: string }>>(error) &&
+    error.response?.data.data?.name === 'EXPIRED_TOKEN'
+  )
 }
 
 // Format number 'price'

@@ -1,5 +1,6 @@
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import { useForm, Controller } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
 import { priceSchema, Schema } from '../../../../utils/rules'
 import { path } from '../../../../constants/path'
@@ -23,6 +24,7 @@ interface Props {
 type FormDataPrice = NoUndefinedField<Pick<Schema, 'price_min' | 'price_max'>>
 
 const AsideFilter = ({ categories, queryConfig }: Props) => {
+  const { t } = useTranslation('home')
   const { category } = queryConfig
   const {
     control,
@@ -77,7 +79,8 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
             </g>
           </g>
         </svg>
-        Tất cả sản phẩm
+        {/* nested json */}
+        {t('aside filter.all categories')}
       </Link>
       <div className='bg-gray-300 h-[1px] my-4'></div>
       <ul>
@@ -120,7 +123,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
             ></polyline>
           </g>
         </svg>
-        <span className='ml-2'>Bộ lọc tìm kiếm</span>
+        <span className='ml-2'>{t('aside filter.search filter')}</span>
       </Link>
       <div className='bg-gray-500 h-[1px] my-4'></div>
       <div className='mt-2'>
