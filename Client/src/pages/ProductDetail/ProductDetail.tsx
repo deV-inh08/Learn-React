@@ -2,6 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
+import { htmlToText } from 'html-to-text'
 import productApi from '../../apis/product.api'
 import ProductRating from '../../components/ProductRating'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from '../../utils/uitls'
@@ -127,11 +129,14 @@ const ProductDetail = () => {
       }
     )
   }
-
   return (
     <div className='bg-gray-200 py-6'>
       {product && (
         <>
+          <Helmet>
+            <title>{product.name} | Shopee Clone</title>
+            <meta name='description' content={htmlToText(product.description)}></meta>
+          </Helmet>
           <div className='bg-white p-4 shadow'>
             <div className='container-custom'>
               <div className='grid grid-cols-12 gap-9'>
@@ -231,7 +236,9 @@ const ProductDetail = () => {
                       onType={handleBuyCount}
                       value={buyCount}
                     ></QuantityController>
-                    <p className='ml-6 text-sm text-gray-500'>{product.quantity} {t('available')}</p>
+                    <p className='ml-6 text-sm text-gray-500'>
+                      {product.quantity} {t('available')}
+                    </p>
                   </div>
                   <div className='mt-8 flex items-center'>
                     <button

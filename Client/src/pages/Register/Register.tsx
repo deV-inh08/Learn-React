@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 // import { omit } from 'lodash' //Don't feature tree-shaking => fix ()
 
 // import trực tiếp
@@ -98,6 +99,10 @@ const Register = () => {
   })
   return (
     <div className='bg-orange-600'>
+      <Helmet>
+        <title>Đăng kí | Shopee Clone</title>
+        <meta name='description' content='Đăng kí vào dự án Shopee Clone' />
+      </Helmet>
       <div className='container-custom'>
         <div className='grid grid-cols-1 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>

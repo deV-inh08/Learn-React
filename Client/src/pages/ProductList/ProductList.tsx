@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async'
 import AsideFilter from './components/AsideFilter'
 import SortProductList from './components/SortProductList'
 import Product from './components/Product/Product'
@@ -37,6 +38,10 @@ const ProductList = () => {
 
   return (
     <div className='bg-gray-200 py-6'>
+      <Helmet>
+        <title>Trang chủ | Shopee Clone</title>
+        <meta name='description' content='Trang chủ dự án Shopee Clone'></meta>
+      </Helmet>
       <div className='container-custom'>
         {productsData && (
           <div className='grid grid-cols-12 gap-6'>

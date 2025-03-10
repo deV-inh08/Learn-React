@@ -11,6 +11,7 @@ import { ErrorResponse } from '../../types/util.type'
 import { useContext } from 'react'
 import { AppContext } from '../../contexts/app.context'
 import Button from '../../components/Button'
+import { Helmet } from 'react-helmet-async'
 
 const Login = () => {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
@@ -55,6 +56,10 @@ const Login = () => {
   })
   return (
     <div className='bg-orange-600'>
+      <Helmet>
+        <title>Đăng nhập | Shoppe Clone</title>
+        <meta name='description' content='Đăng nhập vào dự án Shopee Clone' />
+      </Helmet>
       <div className='container-custom'>
         <div className='grid grid-cols-1 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
