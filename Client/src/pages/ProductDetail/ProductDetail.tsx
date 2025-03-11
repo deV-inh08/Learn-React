@@ -54,6 +54,7 @@ const ProductDetail = () => {
         buy_count: buyCount,
         product_id: product?._id as string
       },
+      // handle success addToCart
       {
         onSuccess: (data) => {
           toast.success(data.data.message, { autoClose: 1000 })
