@@ -2,8 +2,9 @@ import { describe, test, expect } from 'vitest'
 import '@testing-library/jest-dom/vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, MemoryRouter } from 'react-router-dom'
 import App from './App'
+import { logScreen } from './utils/testUtils'
 
 describe('App', () => {
   test('App render và chuyển trang', async () => {
@@ -39,5 +40,16 @@ describe('App', () => {
       expect(document.querySelector('title')?.textContent).toBe('Đăng nhập | Shopee Clone')
     })
     screen.debug(document.body.parentElement as HTMLElement, 99999999)
+  })
+
+  test('To Not Found Page', async () => {
+    const badRouter = '/some/bad/route'
+    render(
+      // MemoryRouter phù hợp viết unit test
+      <MemoryRouter initialEntries={[badRouter]}>
+        <App />
+      </MemoryRouter>
+    )
+    await logScreen()
   })
 })

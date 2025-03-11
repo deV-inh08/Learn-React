@@ -81,14 +81,13 @@ export class Http {
               this.refreshTokenRequest = this.refreshTokenRequest
                 ? this.refreshTokenRequest
                 : this.handleRefreshToken().finally(() => {
-                    // 
                     setTimeout(() => {
                       this.refreshTokenRequest = null
                     }, 10000)
                   })
               return this.refreshTokenRequest.then((access_token) => {
                 if (config?.headers) config.headers.authorization = access_token
-                return this.instance({ ...config, headers: { ...config.headers, authorization: access_token }})
+                return this.instance({ ...config, headers: { ...config.headers, authorization: access_token } })
               })
             }
             clearLS()
