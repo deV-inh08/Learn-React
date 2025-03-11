@@ -57,7 +57,7 @@ const Login = () => {
   return (
     <div className='bg-orange-600'>
       <Helmet>
-        <title>Đăng nhập | Shoppe Clone</title>
+        <title>Đăng nhập | Shopee Clone</title>
         <meta name='description' content='Đăng nhập vào dự án Shopee Clone' />
       </Helmet>
       <div className='container-custom'>
