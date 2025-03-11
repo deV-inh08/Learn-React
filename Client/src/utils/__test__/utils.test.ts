@@ -12,7 +12,6 @@ describe('isAxiosError', () => {
   })
 })
 
-
 describe('isAxiosUnprocessableEntityError', () => {
   it('isAxiosUnprocessableEntityError trả về boolean', () => {
     expect(isAxiosUnprocessableEntityError(new Error())).toBe(false)

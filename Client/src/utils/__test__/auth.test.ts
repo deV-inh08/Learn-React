@@ -1,11 +1,22 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { clearLS, getAccessTokenFromLocalStorage, getProfileFromLS, getRefreshTokenFromLocalStorage, setAccessTokenToLocalStorage, setProfileToLS, setRefreshTokenToLS } from '../authLS'
+import {
+  clearLS,
+  getAccessTokenFromLocalStorage,
+  getProfileFromLS,
+  getRefreshTokenFromLocalStorage,
+  setAccessTokenToLocalStorage,
+  setProfileToLS,
+  setRefreshTokenToLS
+} from '../authLS'
 
-const access_token ='Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Y2JkZGQzMjE2Y2E0MDMzZWQxMGU1NiIsImVtYWlsIjoidHJhbnZpbmgyNHRAZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJjcmVhdGVkX2F0IjoiMjAyNS0wMy0xMVQwMzowMzozOC44NDhaIiwiaWF0IjoxNzQxNjYyMjE4LCJleHAiOjE3NDE3NDg2MTh9.s9X5S0TOroHBy0fb5NQqHCktoqWv-n7_rw5bU1EOAgA'
+const access_token =
+  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Y2JkZGQzMjE2Y2E0MDMzZWQxMGU1NiIsImVtYWlsIjoidHJhbnZpbmgyNHRAZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJjcmVhdGVkX2F0IjoiMjAyNS0wMy0xMVQwMzowMzozOC44NDhaIiwiaWF0IjoxNzQxNjYyMjE4LCJleHAiOjE3NDE3NDg2MTh9.s9X5S0TOroHBy0fb5NQqHCktoqWv-n7_rw5bU1EOAgA'
 
-const refresh_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Y2JkZGQzMjE2Y2E0MDMzZWQxMGU1NiIsImVtYWlsIjoidHJhbnZpbmgyNHRAZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJjcmVhdGVkX2F0IjoiMjAyNS0wMy0xMVQwMzowMzozOC44NDhaIiwiaWF0IjoxNzQxNjYyMjE4LCJleHAiOjE3NTU0ODYyMTh9.BtuuYZssXJdeuJCYzOtHg_aBShmbxaQbEIlwm2htVBk'
+const refresh_token =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Y2JkZGQzMjE2Y2E0MDMzZWQxMGU1NiIsImVtYWlsIjoidHJhbnZpbmgyNHRAZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJjcmVhdGVkX2F0IjoiMjAyNS0wMy0xMVQwMzowMzozOC44NDhaIiwiaWF0IjoxNzQxNjYyMjE4LCJleHAiOjE3NTU0ODYyMTh9.BtuuYZssXJdeuJCYzOtHg_aBShmbxaQbEIlwm2htVBk'
 
-const profile='{"_id":"67cbddd3216ca4033ed10e56","roles":["User"],"email":"tranvinh24t@gmail.com","createdAt":"2025-03-08T06:04:03.893Z","updatedAt":"2025-03-08T06:04:03.893Z","__v":0}'
+const profile =
+  '{"_id":"67cbddd3216ca4033ed10e56","roles":["User"],"email":"tranvinh24t@gmail.com","createdAt":"2025-03-08T06:04:03.893Z","updatedAt":"2025-03-08T06:04:03.893Z","__v":0}'
 
 beforeEach(() => {
   localStorage.clear()

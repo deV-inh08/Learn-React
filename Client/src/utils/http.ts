@@ -14,7 +14,7 @@ import { config } from '../constants/config'
 import { PATH_URLS } from '../apis/auth.apis'
 import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from './uitls'
 
-class Http {
+export class Http {
   instance: AxiosInstance
   // save accessToken in RAM
   private accessToken: string
