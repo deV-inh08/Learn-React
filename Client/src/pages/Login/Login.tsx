@@ -54,6 +54,7 @@ const Login = () => {
       }
     })
   })
+  // console.log(__dirname)
   return (
     <div className='bg-orange-600'>
       <Helmet>
