@@ -604,6 +604,25 @@
   dependencies:
     "@types/mdx" "^2.0.0"
 
+"@mjackson/form-data-parser@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@mjackson/form-data-parser/-/form-data-parser-0.4.0.tgz#429dcd41a71c9f9e4d6873ef0dfa097110187a34"
+  integrity sha512-zDQ0sFfXqn2bJaZ/ypXfGUe0lUjCzXybBHYEoyWaO2w1dZ0nOM9nRER8tVVv3a8ZIgO/zF6p2I5ieWJAUOzt3w==
+  dependencies:
+    "@mjackson/multipart-parser" "^0.6.1"
+
+"@mjackson/headers@^0.5.0":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@mjackson/headers/-/headers-0.5.1.tgz#2d01fdd8909737b88438825b25ce21a14bfed182"
+  integrity sha512-sJpFgecPT/zJvwk3GRNVWNs8EkwaJoUNU2D0VMlp+gDJs6cuSTm1q/aCZi3ZtuV6CgDEQ4l2ZjUG3A9JrQlbNA==
+
+"@mjackson/multipart-parser@^0.6.1":
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/@mjackson/multipart-parser/-/multipart-parser-0.6.3.tgz#17648f42c44147b45b53ef0c8d76d24fd444ae82"
+  integrity sha512-aQhySnM6OpAYMMG+m7LEygYye99hB1md/Cy1AFE0yD5hfNW+X4JDu7oNVY9Gc6IW8PZ45D1rjFLDIUdnkXmwrA==
+  dependencies:
+    "@mjackson/headers" "^0.5.0"
+
 "@mswjs/interceptors@^0.37.0":
   version "0.37.6"
   resolved "https://registry.yarnpkg.com/@mswjs/interceptors/-/interceptors-0.37.6.tgz#2635319b7a81934e1ef1b5593ef7910347e2b761"
@@ -1024,7 +1043,7 @@
     "@vitest/expect" "2.0.5"
     "@vitest/spy" "2.0.5"
 
-"@storybook/theming@8.6.4":
+"@storybook/theming@8.6.4", "@storybook/theming@^8.0.0":
   version "8.6.4"
   resolved "https://registry.yarnpkg.com/@storybook/theming/-/theming-8.6.4.tgz#d16f65320ad6e35db6cd3455b4d36cae58a87d2f"
   integrity sha512-g9Ns4uenC9oAWETaJ/tEKEIPMdS+CqjNWZz5Wbw1bLNhXwADZgKrVqawzZi64+bYYtQ+i8VCTjPoFa6s2eHiDQ==
@@ -1922,6 +1941,11 @@ combined-stream@^1.0.8:
   integrity sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==
   dependencies:
     delayed-stream "~1.0.0"
+
+compare-versions@^6.0.0:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/compare-versions/-/compare-versions-6.1.1.tgz#7af3cc1099ba37d244b3145a9af5201b629148a9"
+  integrity sha512-4hm4VPpIecmlg59CHXnRDnqGplJFrbLG4aFEl5vl6cK1u76ws3LLvX7ikFnTDl5vo39sjWD6AaDPYodJp/NNHg==
 
 concat-map@0.0.1:
   version "0.0.1"
@@ -3557,6 +3581,11 @@ react-i18next@^15.4.1:
     "@babel/runtime" "^7.25.0"
     html-parse-stringify "^3.0.1"
 
+react-inspector@6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/react-inspector/-/react-inspector-6.0.2.tgz#aa3028803550cb6dbd7344816d5c80bf39d07e9d"
+  integrity sha512-x+b7LxhmHXjHoU/VrFAzw5iutsILRoYyDq97EDYdFpPLcvqtEzk4ZSZSQjnFPbr5T57tLXnHcqFYoN1pI6u8uQ==
+
 react-is@^17.0.1:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
@@ -3824,6 +3853,24 @@ std-env@^3.8.0:
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/std-env/-/std-env-3.8.1.tgz#2b81c631c62e3d0b964b87f099b8dcab6c9a5346"
   integrity sha512-vj5lIj3Mwf9D79hBkltk5qmkFI+biIKWS2IBxEyEU3AX1tUf7AoL8nSazCOiiqQsGKIq01SClsKEzweu34uwvA==
+
+storybook-addon-react-router-v6@^2.0.15:
+  version "2.0.15"
+  resolved "https://registry.yarnpkg.com/storybook-addon-react-router-v6/-/storybook-addon-react-router-v6-2.0.15.tgz#01f890ce92f0af8de070fc3a25a9dfaf2bf13752"
+  integrity sha512-4vOYIQwehlQLyXaCT9K0Iu0po2Z+pANGsqkfm/BQuAEjE9MoN7vrsrQLHINhKbmQVtNMmuS/oBR3GGNbqQ1gew==
+  dependencies:
+    compare-versions "^6.0.0"
+    react-inspector "6.0.2"
+
+storybook-addon-remix-react-router@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/storybook-addon-remix-react-router/-/storybook-addon-remix-react-router-4.0.1.tgz#8b77181ac64faf43fd28e7809a38577be3660808"
+  integrity sha512-Plhul9kInTKdOhoHumiJ0KRmuIVYhT5WBCnAlNt9MlsmDGEuuiimh8msyj5LPWnGD51/t38i14xI8gmmTyu1ow==
+  dependencies:
+    "@mjackson/form-data-parser" "^0.4.0"
+    "@storybook/theming" "^8.0.0"
+    compare-versions "^6.0.0"
+    react-inspector "6.0.2"
 
 storybook@^8.6.4:
   version "8.6.4"

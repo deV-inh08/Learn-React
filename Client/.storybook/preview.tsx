@@ -1,10 +1,9 @@
 import React from 'react'
+import { withRouter } from 'storybook-addon-remix-react-router'
 import type { Preview } from '@storybook/react'
 import '../src/index.css'
-import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppProvider } from '../src/contexts/app.context'
-import App from '../src/App'
 import { HelmetProvider } from 'react-helmet-async'
 import ErrorBoundary from '../src/components/ErrorBoundary/ErrorBoundary'
 
@@ -28,9 +27,9 @@ const preview: Preview = {
     }
   },
   decorators: [
+    withRouter,
     (Story) => (
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
+       <QueryClientProvider client={queryClient}>
           <AppProvider>
             <HelmetProvider>
               <AppProvider>
@@ -41,7 +40,7 @@ const preview: Preview = {
             </HelmetProvider>
           </AppProvider>
         </QueryClientProvider>
-      </BrowserRouter>
+       
     )
   ]
 }
